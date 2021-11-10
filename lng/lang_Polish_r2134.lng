@@ -1,5 +1,5 @@
 # Translation by yohokaru
-# Last update: Sept. 2, 2021
+# Last update: Oct. 17, 2021
 # Updated for OPNPS2LD-v1.1.0-Beta-DB_all-2134-4f5adc5-2021-09-02 and OPNPS2LD-v1.1.0-Beta-ifcaro_all-1779-0265d2a-2021-09-02
 # official thread: https://www.ps2-home.com/forum/viewtopic.php?f=83&t=164
 Polish
@@ -43,7 +43,7 @@ X
 Lista Gier
 Ustawienia Gry
 Usuń Ustawienia
-Scrolling Speed
+Szybkość Przewijania
 Wolno
 Średnio
 Szybko
@@ -51,28 +51,28 @@ Domyślne Menu
 Załaduj Z Dysku
 Proszę czekać.
 Błąd podczas ładowania identyfikatora gry.
-Sortowanie Automatyczne
+Automatyczne Sortowanie
 Błąd ładowania pliku językowego.
-Debug Colors
-Nie wykryto kontrolera, oczekiwanie...
-Cover Art
+Wyświetl Kolory Debugowania
+Nie wykryto kontrolera, oczekiwanie…
+Okładki
 Szeroki Ekran
 Wyłącz
-Wczytywanie ustawień...
-Zapisywanie ustawień...
+Wczytywanie ustawień…
+Zapisywanie ustawień…
 Uruchom Urządzenie
 Odśwież
-BDM Start Mode
-Uruchom Urządzenie HDD
-Uruchom Urządzenie ETH
+Uruchom BDM
+Uruchom HDD
+Uruchom ETH
 Wyświetl Menu Aplikacji
 Automatyczny
 Ręcznie
 Uruchom Serwer NBD
-Uruchamianie Serwera NBD...
-Serwer NBD uruchomiony...
+Uruchamianie Serwera NBD…
+Serwer NBD uruchomiony…
 Nieudane uruchomienie serwera NBD.
-Serwer NBD zostanie zamknięty...
+Serwer NBD zostanie zamknięty…
 Ścieżka Dla IGR
 Kolor Tła
 Kolor Tekstu
@@ -99,7 +99,7 @@ Zmień Nazwę
 Usuń
 Uruchom
 Ustawienia Obrazu
-Write Operations
+Operacja Zapisu
 Zapamiętaj Ostatnio Uruchomioną Grę
 Przycisk Wyboru
 Błąd, gra jest pofragmentowana.
@@ -108,7 +108,7 @@ Testuj Zmiany
 Pozostaw puste dla "GOŚCIA".
 Dokładny Odczyt
 Tryb Synchroniczny
-Odepnij wywołania systemowe
+Odepnij syscalle
 Pomiń Wstawki Filmowe
 Emuluj DVD-DL
 Wyłącz IGR
@@ -128,7 +128,7 @@ Plik VMC istnieje.
 Błędny plik VMC, nieprawidłowy rozmiar.
 Plik VMC musi zostać utworzony.
 Błąd dostępu do VMC %s, kontynuuj z kartą pamięci w gnieździe %d?
-Odświeżanie Automatyczne
+Automatyczne Odświeżanie
 O Programie
 Programiści
 Kontrola Jakości
@@ -146,7 +146,7 @@ Wybór Koloru
 Połącz Ponownie
 Pozostaw puste aby wyświetlić listę udziałów.
 Prefix Ścieżki ETH
-"Cofnij	"
+Cofnij
 Odstęp
 Enter
 Tryb
@@ -180,7 +180,7 @@ Regulacja overscanu.
 Pomiń FMV
 Pomija wstawki filmowe.
 Ustawienia Kodów
-PS2RD Cheat Engine
+Silnik Kodów PS2RD
 Pozwól silnikowi kodów PS2RD patchować grę.
 Tryb Silnika Kodów PS2RD
 Auto-wybieranie lub wybieranie kodów dla gry.
@@ -198,14 +198,14 @@ Aktualizacja przerwana.
 Pobrać ustawienia z sieci?
 Dodatkowe Ustawienia
 Pobrano domyślne.
-Auto start w %i s...
+Auto start w %i s…
 Auto Start
 Wartość w sekundach, 0 wyłącza auto start.
 Logo PS2
 Logo zostanie wyświetlone wyłącznie jeśli region gry i konsoli będzie taki sam.
 Konfiguracja Emulacji Pada
 Ustawienia Emulacji Pada
-Pad Emulator
+Emulacja Pada
 Włącza/wyłącza emulację Pada dla wybranej gry.
 Tryb Emulacji Pada
 Wybierz tryb emulacji Pada.
@@ -213,9 +213,9 @@ DualShock3/4 USB
 DualShock3/4 BT
 Ustawienia Portu:
 Wybierz Port emulacji Pada dla ustawień.
-Emulation
+Emulacja
 Włącz/wyłącz emulację Pada dla wybranego portu.
-Vibration
+Wibracje
 Włącz/wyłącz wibracje dla wybranego portu emulacji Pada.
 Adres MAC adaptera Bluetooth USB:
 Kontroler DS sparowany z adresem MAC:
@@ -233,12 +233,12 @@ Tak
 Nie
 Adapter Bluetooth powinien być w pełni kompatybilny z kontrolerami DS3/DS4.
 Adapter Bluetooth może nie współpracować poprawnie z kontrolerami DS3/DS4.
-Multitap Emulation
+Emulacja Multitapa
 Włącza/wyłącza emulację Multitapa dla wybranej gry.
 Emulacja Multitapa Dla Portu:
 Wybierz port dla emulacji Multitapa.
-Fake DS3 Workaround
-Some fake DS3s need a workaround, this option will enable it.
+Poprawka Dla Klonów DS3
+Niektóre klony DS3 wymagają programowej poprawki, ta opcja ją włączy\wyłączy.
 Emuluj FIELD Flipping
 Poprawka dla gier w których występują usterki w trybie progresywnego obrazu.
 Ustawienia Blokady Rodzicielskiej
@@ -251,18 +251,18 @@ Opcje Kompilacji:
 Błąd - to hasło nie może być użyte.
 Plik VMC %s jest pofragmentowany. Kontynuuj z kartą pamięci w gnieździe %d?
 Ustawienia Dźwiękowe
-Sound Effects
-Boot Sound
+Efekty Dźwiękowe
+Dźwięk Startowy
 Głośność Efektów Dźwiękowych
 Głośność Dźwięku Startowego
 Potwierdasz zmianę rozdzielczości?
 Buforowanie Listy Gier (HDD)
-Notifications
-Config loaded from %s
-Theme loaded from %s
-Language loaded from %s
-%s partition mounted.
-Options
+Powiadomienia
+Ustawienia załadowane z %s
+Motyw załadowany z %s
+Język załadowany z %s
+Zamontowano partycję %s.
+Opcje
 Ustawienia gry zostały zapisane.
 %s ustawienia zostały usunięte.
 Po włączeniu nadpisuje istniejące ustawienia kompatybilności z grami.
@@ -277,13 +277,13 @@ Gatunek
 Data wydania
 Deweloper
 Opis
-Block Devices
-Controller Settings
-Turn on/off Block Device Manager.
-Turn on/off Block Devices (e.g. USB).
-USB Games
-iLink Games
-MX4SIO Games
+Urządzenia Blokowe
+Ustawienia Kontrolera
+Włącz/wyłącz menedżera urządzeń blokowych.
+Włącz/wyłącz urządzenia blokowe (np. USB).
+Gry USB
+Gry iLink
+Gry MX4SIO
 PS1 Games
 PS1 Games Display Mode
 POPSTARTER.ELF not found at '%s'!
