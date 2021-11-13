@@ -97,7 +97,7 @@ IOP_OBJS =	iomanx.o filexio.o ps2fs.o usbd.o bdmevent.o \
 		libsd.o audsrv.o
 
 EECORE_OBJS = ee_core.o ioprp.o util.o \
-		udnl.o imgdrv.o eesync.o \
+		elfldr.o udnl.o imgdrv.o eesync.o \
 		bdm_cdvdman.o IOPRP_img.o smb_cdvdman.o \
 		hdd_cdvdman.o hdd_hdpro_cdvdman.o cdvdfsv.o \
 		ingame_smstcpip.o smap_ingame.o smbman.o smbinit.o
@@ -237,6 +237,8 @@ clean:
 	rm -fr $(MAPFILE) $(EE_BIN) $(EE_BIN_PACKED) $(EE_BIN_STRIPPED) $(EE_VPKD).* $(EE_OBJS_DIR) $(EE_ASM_DIR)
 	echo "-EE core"
 	$(MAKE) -C ee_core clean
+	echo "-Elf Loader"
+	$(MAKE) -C elfldr clean
 	echo "-IOP core"
 	echo " -udnl-t300"
 	$(MAKE) -C modules/iopcore/udnl-t300 clean
@@ -359,6 +361,13 @@ ee_core/ee_core.elf: ee_core
 
 $(EE_ASM_DIR)ee_core.s: ee_core/ee_core.elf | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ eecore_elf
+
+elfldr/elfldr.elf: elfldr
+	echo "-Elf Loader"
+	$(MAKE) -C $<
+
+$(EE_ASM_DIR)elfldr.s: elfldr/elfldr.elf | $(EE_ASM_DIR)
+	$(BIN2S) $< $@ elfldr_elf
 
 $(UDNL_OUT): $(UDNL_SRC)
 	echo "-IOP core"

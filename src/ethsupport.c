@@ -43,13 +43,6 @@ static int ethReadNetConfig(void);
 
 static int ethInitSemaID = -1;
 
-//START of OPL_DB tweaks
-char *ethGetPrefix(void)
-{
-    return ethPrefix;
-}
-
-//END of OPL_DB tweaks
 // Initializes locking semaphore for network support (not for just SMB support, but for the network subsystem).
 static int ethInitSema(void)
 {

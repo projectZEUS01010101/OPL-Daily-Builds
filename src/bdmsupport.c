@@ -16,9 +16,6 @@
 #include <fileXio_rpc.h> // fileXioIoctl, fileXioDevctl
 
 static char bdmPrefix[40]; // Contains the full path to the folder where all the games are.
-//START of OPL_DB tweaks
-static char bdmBase[7];
-//END of OPL_DB tweaks
 static int bdmULSizePrev = -2;
 static time_t bdmModifiedCDPrev;
 static time_t bdmModifiedDVDPrev;
@@ -31,18 +28,6 @@ static int mx4sioModLoaded = 0;
 
 // forward declaration
 static item_list_t bdmGameList;
-
-//START of OPL_DB tweaks
-char *bdmGetPrefix(void)
-{
-    return bdmPrefix;
-}
-
-char *bdmGetBase(void)
-{
-    return bdmBase;
-}
-//END of OPL_DB tweaks
 
 // Identifies the partition that the specified file is stored on and generates a full path to it.
 int bdmFindPartition(char *target, const char *name, int write)
@@ -65,9 +50,6 @@ int bdmFindPartition(char *target, const char *name, int write)
                 sprintf(target, "mass%d:%s/", i, gBDMPrefix);
             else
                 sprintf(target, "mass%d:", i);
-            //START of OPL_DB tweaks
-            sprintf(bdmBase, "mass%d:", i);
-            //END of OPL_DB tweaks
             close(fd);
             return 1;
         }
@@ -78,9 +60,6 @@ int bdmFindPartition(char *target, const char *name, int write)
         sprintf(target, "mass0:%s/", gBDMPrefix);
     else
         sprintf(target, "mass0:");
-    //START of OPL_DB tweaks
-    sprintf(bdmBase, "mass0:");
-    //END of OPL_DB tweaks
     return 0;
 }
 

@@ -316,6 +316,7 @@ static int elmScanVCDsHDD()
 
 static int elmUpdateItemList(void)
 {
+    item_list_t *tmp = NULL;
     elmItemCount = 0;
 
     //Clear game list first.
@@ -323,9 +324,9 @@ static int elmUpdateItemList(void)
         elmGameListFree();
 
     //Try HDD
-    if (hddGetObject(1)) {
+    if ((tmp = hddGetObject(1))) {
         //Eg: pfs0:POPS/POPSTARTER.ELF
-        snprintf(elmPathElfHdd, sizeof(elmPathElfHdd), "%sPOPS/POPSTARTER.ELF", hddGetPrefix());
+        snprintf(elmPathElfHdd, sizeof(elmPathElfHdd), "%sPOPS/POPSTARTER.ELF", tmp->itemGetPrefix());
         LOG("elmPathElfHdd = %s\n", elmPathElfHdd);
 
         //Check if POPSTARTER.ELF exists in the folder.
@@ -339,34 +340,38 @@ static int elmUpdateItemList(void)
     }
 
     //Try ETH
-    if (ethGetObject(1)) {
+    if ((tmp = ethGetObject(1))) {
         //Eg: smb0:POPS/POPSTARTER.ELF
-        snprintf(elmPathElfEth, sizeof(elmPathElfEth), "%sPOPS/POPSTARTER.ELF", ethGetPrefix());
+        snprintf(elmPathElfEth, sizeof(elmPathElfEth), "%sPOPS/POPSTARTER.ELF", tmp->itemGetPrefix());
         LOG("elmPathElfEth = %s\n", elmPathElfEth);
 
         //Check if POPSTARTER.ELF exists in the folder.
         int fdElf = open(elmPathElfEth, O_RDONLY, 0666);
         if (fdElf >= 0) {
             close(fdElf);
-            elmItemCount += elmScanVCDs(ethGetPrefix());
+            elmItemCount += elmScanVCDs(tmp->itemGetPrefix());
         } else {
             LOG("POPSTARTER.ELF not found at %s", elmPathElfEth);
         }
     }
 
-    //Try USB
-    if (bdmGetObject(1)) {
-        //Eg: mass0:POPS/POPSTARTER.ELF
-        snprintf(elmPathElfBdm, sizeof(elmPathElfBdm), "%sPOPS/POPSTARTER.ELF", bdmGetBase());
-        LOG("elmPathElfUsb = %s\n", elmPathElfBdm);
-
-        //Check if POPSTARTER.ELF exists in the folder.
-        int fdElf = open(elmPathElfBdm, O_RDONLY, 0666);
-        if (fdElf >= 0) {
-            close(fdElf);
-            elmItemCount += elmScanVCDs(bdmGetBase());
-        } else {
-            LOG("POPSTARTER.ELF not found at %s", elmPathElfBdm);
+    //Try BDM
+    if ((tmp = bdmGetObject(1))) {
+        char bdmPathBase[7]; //massX:
+        char bdmPathTest[40];
+        int bdmFd, i;
+        for (i = 0; i < MAX_BDM_DEVICES; i++) {
+            snprintf(bdmPathBase, sizeof(bdmPathBase), "mass%d:", i);
+            snprintf(bdmPathTest, sizeof(bdmPathTest), "%sPOPS/POPSTARTER.ELF", bdmPathBase);
+            LOG("searching at: %s", bdmPathTest);
+            bdmFd = open(bdmPathTest, O_RDONLY, 0666);
+            if (bdmFd >= 0) {
+                LOG("Found!");
+                strcpy(elmPathElfBdm, bdmPathTest);
+                close(bdmFd);
+                elmItemCount += elmScanVCDs(bdmPathBase);
+                break;
+            }
         }
     }
 
@@ -610,9 +615,9 @@ static config_set_t *elmGetConfig(int id)
     if ((listSupport = hddGetObject(1))) {
         char path[256];
 #if OPL_IS_DEV_BUILD
-            snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", hddGetPrefix(), cur->ID));
+            snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", listSupport->itemGetPrefix(), cur->ID));
 #else
-        snprintf(path, sizeof(path), "%sCFG/%s.cfg", hddGetPrefix(), cur->ID);
+        snprintf(path, sizeof(path), "%sCFG/%s.cfg", listSupport->itemGetPrefix(), cur->ID);
 #endif
             config = configAlloc(1, NULL, path);
             ret = configRead(config);
@@ -625,9 +630,9 @@ static config_set_t *elmGetConfig(int id)
             configFree(config);
 
 #if OPL_IS_DEV_BUILD
-        snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", ethGetPrefix(), cur->ID);
+        snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", listSupport->itemGetPrefix(), cur->ID);
 #else
-        snprintf(path, sizeof(path), "%sCFG/%s.cfg", ethGetPrefix(), cur->ID);
+        snprintf(path, sizeof(path), "%sCFG/%s.cfg", listSupport->itemGetPrefix(), cur->ID);
 #endif
         config = configAlloc(1, NULL, path);
         ret = configRead(config);
@@ -640,9 +645,9 @@ static config_set_t *elmGetConfig(int id)
             configFree(config);
 
 #if OPL_IS_DEV_BUILD
-        snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", bdmGetPrefix(), cur->ID);
+        snprintf(path, sizeof(path), "%sCFG-DEV/%s.cfg", listSupport->itemGetPrefix(), cur->ID);
 #else
-        snprintf(path, sizeof(path), "%sCFG/%s.cfg", bdmGetPrefix(), cur->ID);
+        snprintf(path, sizeof(path), "%sCFG/%s.cfg", listSupport->itemGetPrefix(), cur->ID);
 #endif
         config = configAlloc(1, NULL, path);
         ret = configRead(config);
@@ -713,6 +718,6 @@ static void elmShutdown(void)
 }
 
 static item_list_t elmItemList = {
-    ELM_MODE, -1, 0, MODE_FLAG_NO_COMPAT | MODE_FLAG_NO_UPDATE, MENU_MIN_INACTIVE_FRAMES, ELM_MODE_UPDATE_DELAY, "PS1 Games", &elmGetTextId, NULL, NULL, NULL, &elmInit, &elmNeedsUpdate, &elmUpdateItemList,
+    ELM_MODE, -1, 0, MODE_FLAG_NO_COMPAT | MODE_FLAG_NO_UPDATE, MENU_MIN_INACTIVE_FRAMES, ELM_MODE_UPDATE_DELAY, &elmGetTextId, NULL, &elmInit, &elmNeedsUpdate, &elmUpdateItemList,
     &elmGetItemCount, NULL, &elmGetItemName, &elmGetItemNameLength, &elmGetItemStartup, &elmDeleteItem, &elmRenameItem, &elmLaunchItem,
     &elmGetConfig, &elmGetImage, &elmCleanUp, &elmShutdown, NULL, &elmGetIconId};

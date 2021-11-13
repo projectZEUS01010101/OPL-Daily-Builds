@@ -15,11 +15,6 @@ typedef struct
     vmc_spec_t specs; /* Card specifications */
 } bdm_vmc_infos_t;
 
-//START of OPL_DB tweaks
-char *bdmGetPrefix(void);
-char *bdmGetBase(void);
-//END of OPL_DB tweaks
-
 #define MAX_BDM_DEVICES 5
 
 void bdmInit();

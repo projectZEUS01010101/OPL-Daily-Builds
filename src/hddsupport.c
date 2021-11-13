@@ -36,13 +36,6 @@ static hdl_games_list_t hddGames;
 // forward declaration
 static item_list_t hddGameList;
 
-//START of OPL_DB tweaks
-char *hddGetPrefix(void)
-{
-    return hddPrefix;
-}
-
-//END of OPL_DB tweaks
 static int hddLoadGameListCache(hdl_games_list_t *cache);
 static int hddUpdateGameListCache(hdl_games_list_t *cache, hdl_games_list_t *game_list);
 
