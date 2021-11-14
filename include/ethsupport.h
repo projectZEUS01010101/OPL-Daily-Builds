@@ -15,9 +15,6 @@ typedef struct
     vmc_spec_t specs; /* Card specifications */
 } smb_vmc_infos_t;
 
-//START of OPL_DB tweaks
-char *ethGetPrefix(void);
-//END of OPL_DB tweaks
 void ethInit(void);               // Full initialization (Start ETH + SMB and apply configuration). GUI must be already initialized, used by GUI to start SMB mode.
 void ethDeinitModules(void);      // Module-only deinitialization, without the GUI's knowledge (for specific reasons, otherwise unused).
 int ethLoadInitModules(void);     // Initializes Ethernet and applies configuration.

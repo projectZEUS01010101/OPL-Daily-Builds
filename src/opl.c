@@ -128,9 +128,7 @@ static unsigned int frameCounter;
 
 static char errorMessage[256];
 
-//START of OPL_DB tweaks
 static opl_io_module_t list_support[MODE_COUNT];
-//END of OPL_DB tweaks
 
 // Global data
 char *gBaseMCDir;
@@ -417,8 +415,10 @@ int oplPath2Mode(const char *path)
 
     for (i = 0; i < MODE_COUNT; i++) {
         listSupport = list_support[i].support;
-        if ((listSupport != NULL) && (listSupport->itemGetAppsPath != NULL)) {
-            listSupport->itemGetAppsPath(appsPath, sizeof(appsPath));
+        if ((listSupport != NULL) && (listSupport->itemGetPrefix != NULL)) {
+            char *prefix = listSupport->itemGetPrefix();
+            snprintf(appsPath, sizeof(appsPath), "%sAPPS", prefix);
+
             blkdevnameend = strchr(appsPath, ':');
             if (blkdevnameend != NULL) {
                 blkdevnamelen = (int)(blkdevnameend - appsPath);
@@ -488,8 +488,9 @@ int oplScanApps(int (*callback)(const char *path, config_set_t *appConfig, void 
     count = 0;
     for (i = 0; i < MODE_COUNT; i++) {
         listSupport = list_support[i].support;
-        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetAppsPath != NULL)) {
-            listSupport->itemGetAppsPath(appsPath, sizeof(appsPath));
+        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetPrefix != NULL)) {
+            char *prefix = listSupport->itemGetPrefix();
+            snprintf(appsPath, sizeof(appsPath), "%sAPPS", prefix);
 
             if ((pdir = opendir(appsPath)) != NULL) {
                 while ((pdirent = readdir(pdir)) != NULL) {
@@ -554,8 +555,9 @@ config_set_t *oplGetLegacyAppsConfig(void)
 
     for (i = MODE_COUNT - 1; i >= 0; i--) {
         listSupport = list_support[i].support;
-        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetLegacyAppsPath != NULL)) {
-            listSupport->itemGetLegacyAppsPath(appsPath, sizeof(appsPath));
+        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetPrefix != NULL)) {
+            char *prefix = listSupport->itemGetPrefix();
+            snprintf(appsPath, sizeof(appsPath), "%sconf_apps.cfg", prefix);
 
             fd = openFile(appsPath, O_RDONLY);
             if (fd >= 0) {
@@ -582,8 +584,9 @@ config_set_t *oplGetLegacyAppsInfo(char *name)
 
     for (i = MODE_COUNT - 1; i >= 0; i--) {
         listSupport = list_support[i].support;
-        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetLegacyAppsInfo != NULL)) {
-            listSupport->itemGetLegacyAppsInfo(appsPath, sizeof(appsPath), name);
+        if ((listSupport != NULL) && (listSupport->enabled) && (listSupport->itemGetPrefix != NULL)) {
+            char *prefix = listSupport->itemGetPrefix();
+            snprintf(appsPath, sizeof(appsPath), "%sCFG%s%s.cfg", prefix, i == ETH_MODE ? "\\" : "/", name);
 
             fd = openFile(appsPath, O_RDONLY);
             if (fd >= 0) {
@@ -1778,6 +1781,7 @@ static void autoLaunchHDDGame(char *argv[])
     LOG_ENABLE();
 
     hddLoadModules();
+    InitConsoleRegionData();
 
     ret = configReadMulti(CONFIG_ALL);
     if (CONFIG_ALL & CONFIG_OPL) {

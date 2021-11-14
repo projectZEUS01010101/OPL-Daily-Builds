@@ -82,8 +82,9 @@ GFX_OBJS =	usb_icon.o hdd_icon.o eth_icon.o app_icon.o elm_icon.o \
 		Scan_1080i.o Scan_1080i2.o Scan_1080p.o Vmode_multi.o Vmode_ntsc.o Vmode_pal.o \
 		poeveticanew.o icon_sys.o icon_icn.o
 
-MISC_OBJS =	icon_sys_A.o icon_sys_J.o icon_sys_C.o conf_theme_OPL.o \
-		boot.o cancel.o confirm.o cursor.o message.o transition.o
+AUDIO_OBJS =	boot.o cancel.o confirm.o cursor.o message.o transition.o
+
+MISC_OBJS =	icon_sys_A.o icon_sys_J.o icon_sys_C.o conf_theme_OPL.o
 
 IOP_OBJS =	iomanx.o filexio.o ps2fs.o usbd.o bdmevent.o \
 		bdm.o bdmfs_vfat.o usbmass_bd.o iLinkman.o IEEE1394_bd.o mx4sio_bd.o \
@@ -112,7 +113,7 @@ EE_ASM_DIR = asm/
 MAPFILE = opl.map
 EE_LDFLAGS += -Wl,-Map,$(MAPFILE)
 
-EE_LIBS = -L$(PS2SDK)/ports/lib -L$(GSKIT)/lib -L./lib -lgskit -ldmakit -lgskit_toolkit -lpoweroff -lfileXio -lpatches -ljpeg_ps2_addons -ljpeg -lpng -lz -ldebug -lm -lmc -lfreetype -lvux -lcdvd -lnetman -lps2ips -laudsrv -lpadx
+EE_LIBS = -L$(PS2SDK)/ports/lib -L$(GSKIT)/lib -L./lib -lgskit -ldmakit -lgskit_toolkit -lpoweroff -lfileXio -lpatches -ljpeg_ps2_addons -ljpeg -lpng -lz -ldebug -lm -lmc -lfreetype -lvux -lcdvd -lnetman -lps2ips -laudsrv -lpadx -lelf-loader
 EE_INCS += -I$(PS2SDK)/ports/include -I$(PS2SDK)/ports/include/freetype2 -I$(GSKIT)/include -I$(GSKIT)/ee/dma/include -I$(GSKIT)/ee/gs/include -I$(GSKIT)/ee/toolkit/include -Imodules/iopcore/common -Imodules/network/common -Imodules/hdd/common -Iinclude
 
 BIN2C = $(PS2SDK)/bin/bin2c
@@ -195,7 +196,7 @@ EE_CFLAGS += -fsingle-precision-constant -DOPL_VERSION=\"$(OPL_VERSION)\"
 
 # There are a few places where the config key/value are truncated, so disable these warnings
 EE_CFLAGS += -Wno-format-truncation -Wno-stringop-truncation
-EE_OBJS += $(FRONTEND_OBJS) $(GFX_OBJS) $(MISC_OBJS) $(EECORE_OBJS) $(IOP_OBJS)
+EE_OBJS += $(FRONTEND_OBJS) $(GFX_OBJS) $(AUDIO_OBJS) $(MISC_OBJS) $(EECORE_OBJS) $(IOP_OBJS)
 EE_OBJS := $(EE_OBJS:%=$(EE_OBJS_DIR)%)
 
 .SILENT:
@@ -929,22 +930,22 @@ $(EE_ASM_DIR)icon_sys_C.s: misc/icon_C.sys | $(EE_ASM_DIR)
 $(EE_ASM_DIR)conf_theme_OPL.s: misc/conf_theme_OPL.cfg | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ conf_theme_OPL_cfg
 
-$(EE_ASM_DIR)boot.s: misc/boot.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)boot.s: audio/boot.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ boot_adp
 
-$(EE_ASM_DIR)cancel.s: misc/cancel.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)cancel.s: audio/cancel.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ cancel_adp
 
-$(EE_ASM_DIR)confirm.s: misc/confirm.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)confirm.s: audio/confirm.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ confirm_adp
 
-$(EE_ASM_DIR)cursor.s: misc/cursor.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)cursor.s: audio/cursor.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ cursor_adp
 
-$(EE_ASM_DIR)message.s: misc/message.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)message.s: audio/message.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ message_adp
 
-$(EE_ASM_DIR)transition.s: misc/transition.adp | $(EE_ASM_DIR)
+$(EE_ASM_DIR)transition.s: audio/transition.adp | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ transition_adp
 
 $(EE_ASM_DIR)IOPRP_img.s: modules/iopcore/IOPRP.img | $(EE_ASM_DIR)
