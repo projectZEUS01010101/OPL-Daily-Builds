@@ -128,9 +128,7 @@ static unsigned int frameCounter;
 
 static char errorMessage[256];
 
-//START of OPL_DB tweaks
 static opl_io_module_t list_support[MODE_COUNT];
-//END of OPL_DB tweaks
 
 // Global data
 char *gBaseMCDir;

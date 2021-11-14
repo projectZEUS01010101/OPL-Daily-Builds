@@ -819,8 +819,8 @@ int guiGameSaveConfig(config_set_t *configSet, item_list_t *support)
     //START of OPL_DB tweaks
     char modesBuf[16]; //(1+2+3+4+5+6+7+8)= 15 +1 null
     int modesBufPos = 0;
+    //END of OPL_DB tweaks
     for (i = 0; i < COMPAT_MODE_COUNT; ++i) {
-        //END of OPL_DB tweaks
         int mdpart;
         diaGetInt(diaCompatConfig, COMPAT_MODE_BASE + i, &mdpart);
         compatMode |= (mdpart ? 1 : 0) << i;
@@ -842,15 +842,17 @@ int guiGameSaveConfig(config_set_t *configSet, item_list_t *support)
             configRemoveKey(configSet, CONFIG_ITEM_DMA);
     }
 
-    //START of OPL_DB tweaks
     if (compatMode != 0) {
         result = configSetInt(configSet, CONFIG_ITEM_COMPAT, compatMode);
+        //START of OPL_DB tweaks
         configSetStr(configSet, CONFIG_ITEM_MODES, modesBuf);
+        //END of OPL_DB tweaks
     } else {
         configRemoveKey(configSet, CONFIG_ITEM_COMPAT);
+        //START of OPL_DB tweaks
         configRemoveKey(configSet, CONFIG_ITEM_MODES);
+        //END of OPL_DB tweaks
     }
-    //END of OPL_DB tweaks
 
     /// GSM ///
     diaGetInt(diaGSConfig, GSMCFG_ENABLEGSM, &EnableGSM);
