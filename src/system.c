@@ -46,8 +46,10 @@ typedef struct
 extern void *eecore_elf;
 extern int size_eecore_elf;
 
+//START of OPL_DB tweaks
 extern void *elfldr_elf;
 extern int size_elfldr_elf;
+//END of OPL_DB tweaks
 
 extern unsigned char IOPRP_img[];
 extern unsigned int size_IOPRP_img;
