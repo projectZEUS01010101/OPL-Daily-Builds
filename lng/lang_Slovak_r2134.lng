@@ -1,0 +1,295 @@
+# Translated by Samuel Kuchta
+# Last update: Dec. 28, 2021
+# Updated for OPNPS2LD-v1.1.0-Beta-DB_all-2134-4f5adc5-2021-09-02 and OPNPS2LD-v1.1.0-Beta-ifcaro_all-1779-0265d2a-2021-09-02
+# official thread: https://www.ps2-home.com/forum/viewtopic.php?f=83&t=164
+Slovak
+Uložiť Zmeny
+Späť
+Nastavenie Siete
+Pokročilé Možnosti
+<žiadne hodnoty>
+Nastavenia boli uložené do %s
+Chyba pri zápise nastavení!
+Ukončiť Aplikáciu
+Všeobecné nastavenia
+Ponuka
+BDM Hry
+HDD Hry
+ETH Hry
+Aplikácie
+Motív
+Jazyk
+Systém bude vypnutý.
+Ukončiť a vrátiť sa do Prehliadača?
+Zrušiť aktualizovanie?
+%d: Pevný disk sa nenašiel.
+%d: Pevný disk nie je naformátovaný.
+%d: Chyba pri spúšťaní siete.
+%d: Sieťový adaptér sa nenašiel.
+%d: Nedá sa pripojiť k serveru SMB.
+%d: Nedá sa prihlásiť na server SMB.
+%d: Nedá sa otvoriť zdieľanie SMB.
+%d: Nedájú sa vypísať zdieľané zložky SMB.
+%d: Nedá sa vypísať zoznam hier.
+%d: Server DHCP je nedostupný.
+%d: Žiadne sieťové pripojenie.
+Zap
+Vyp
+OK
+Vybrať
+Zrušiť
+Kruh
+Krížik
+Zoznam Hier
+Nastavenie Hry
+Odstrániť Nastavenia
+Rýchlosť Rolovania
+Pomalá
+Stredná
+Rýchla
+Predvolená Ponuka
+Načítať Z Disku
+Čakajte prosím.
+Chyba pri načítaní ID hry.
+Automatické Zoradenie
+Chyba pri načítaní jazykového súboru.
+Farby Pre Ladenie
+Ovládač sa nenašiel, čakám…
+Prebal
+Širokouhlý Obraz
+Vypnúť
+Načítanie konfigurácie…
+Ukladanie konfigurácie…
+Spustiť Zariadenie
+Obnoviť
+Režim Spúšťania BDM
+Režim Spúšťania Zariadenia HDD
+Režim Spúšťania Zariadenia ETH
+Režim Spúšťania Aplikácií
+Automaticky
+Manuálne
+Spustiť Server NBD
+Spúšťanie Servera NBD…
+Server NBD beží…
+Spustenie Servera NBD zlyhalo.
+Vypínanie Servera NBD…
+Cesta k ELF pri volaní IGR
+Farba Pozadia
+Farba Textu
+- Server SMB -
+Typ IP Adresy
+Statická
+DHCP
+IP Adresa
+Adresa
+Maska
+Brána
+DNS Server
+Port
+Názov Zdieľania
+Užívateľ
+Heslo
+<nenastavené>
+Typ Adresy
+IP
+NetBIOS
+Prijať
+Položka bude natrvalo zmazaná, pokračovať?
+Premenovať
+Vymazať
+Spustiť
+Nastavenie Obrazovky
+Operácie Zápisu
+Zapamätať Si Posledne Hranú Hru
+Tlačidlo Výberu
+Chyba, hra je fragmentovaná.
+Chyba, položku nemožno spustiť.
+Otestovať Zmeny
+Nechajte prázdne pre povolenie účtu GUEST.
+Presné Čítanie
+Synchrónny Režim
+Odpojiť Systémové Volania
+Preskočiť Videá
+Emulovať DVD-DL
+Zakázať IGR
+Zmenou veľkosti dôjde k preformátovaniu VMC.
+Vytvoriť
+Štart
+Zmeniť
+Zrušiť
+Reset
+Použiť Obecnú
+Nastaviť VMC
+Názov
+Veľkosť
+Stav
+Postup
+Súbor VMC existuje.
+Neplatný súbor VMC, nesprávna veľkosť.
+Je potrebné vytvoriť súbor VMC.
+Chyba pri prístupe k VMC %s. Pokračovať s pamäťovou kartou v slote %d?
+Automatické Obnovenie
+O Aplikácii
+Programátori
+Zaistenie Kvality
+Prefix Cesty k BDM
+Spustí vlastný ELF po IGR.
+Hodnota v minútach, 0 pre deaktiváciu funkcie
+Automatické Vypnutie HDD
+Video Režim
+Farba Dialógového Okna
+Farba Vybranej Položky
+Obnoviť Farby
+Info
+Vlastné ELF
+Výber Farby
+Znovu Pripojiť
+Pre výpis zdieľania ponechajte prázdne.
+Prefix Cesty k ETH
+Backspace
+Medzera
+Enter
+Režim
+Slot VMC 1
+Slot VMC 2
+ID hry
+Režim DMA
+Vertikálna Synchronizácia
+Režim 1
+Režim 2
+Režim 3
+Režim 4
+Režim 5
+Režim 6
+Nastaviť GSM
+Režim Pripojenia Ethernetu
+100Mbit Úplný Duplex
+100Mbit Polovičný Duplex
+10Mbit Úplný Duplex
+10Mbit Polovičný Duplex
+Nastavenie GSM
+Prepínač GSM
+Zapína/Vypína GSM.
+Vynútený užívateľský režim zobrazenia.
+Horizontálna Pozícia
+Horizontálna Úprava
+Vertikálna Pozícia
+Vertikálna Úprava
+Prefotenie
+Úprava Prefotenia.
+Preskočiť FMV
+Preskočí full motion videá
+Nastavenie Cheatov
+PS2RD Cheat Engine
+Umožňuje PS2RD Cheat Engine opraviť vašu hru.
+Režim PS2RD Cheat Engine
+Automatický alebo užívateľský výber cheatov.
+Automatický Výber Cheatov
+Vybrať Cheaty Pre Hru
+Chyba: nepodarilo sa načítať súbor s cheatmi.
+Neboli nájdené žiadne cheaty.
+Stiahnuť Predvolené nastavenia
+Aktualizácia Cez Sieť
+Prepísať Existujúce Záznamy
+Aktualizácia Zlyhala.
+Pripojenie k aktualizačnému serveru zlyhalo.
+Aktualizácia dokončená.
+Aktualizácia zrušená.
+Stiahnuť nastavenia zo siete?
+Vlastné Nastavenia
+Stiahnuté Predvolené Nastavenia
+Automatické spustenie za %i s…
+Automatické Spustenie
+Hodnota v sekundách, 0 pre deaktiváciu automatického spustenia.
+Logo PS2
+Zobrazuje sa pre platné logo disku zodpovedajúce regiónu konzoly.
+Nastaviť PADEMU
+Nastavenie Emulátora Ovládača
+Emulácia Ovládača
+Zapne/Vypne Emulátor Ovládača pre vybranú hru.
+Režim Emulátora Ovládače
+Vyberte režim Emulátora Ovládača.
+DualShock3/4 USB
+DualShock3/4 BT
+Nastavenia Pre Port:
+Vyberte nastavenia pre port emulátora ovládača.
+Emulácia
+Zapne/Vypne Emulátor Ovládača pre vybraný port.
+Vibrácie
+Zapne/Vypne vibrácie pre vybraný port Emulátora Ovládača.
+MAC adresa USB Bluetooth adaptéra:
+DS ovládač spárovaný s MAC adresou:
+Spárovať
+Spárovať DS ovládač
+Spárovať DS ovládač s MAC adresou Bluetooth adaptéra.
+Nepripojené
+Informácie o Bluetooth adaptéri
+Zobrazuje ďalšie informácie a podporované funkcie.
+Verzia HCI:
+Verzia LMP:
+ID Výrobcu:
+Podporované Funkcie:
+Áno
+Nie
+Bluetooth adaptér by mal byť plne kompatibilný s ovládačmi DS3/DS4.
+Bluetooth adaptér nemusí správne fungovať s ovládačmi DS3/DS4.
+Multitap Emulácia
+Zapne/Vypne emuláciu Multitap pre vybranú hru.
+Multitap Emulátor Na Porte:
+Vyberte port pre emuláciu Multitap.
+Riešenie Pre Neoriginálne DS3
+Niektoré neoriginálne DS3 vyžadujú špeciálny režim povolený touto voľbou.
+Emulovať FIELD Flipping
+Oprava pre hry, ktoré sa správajú nesprávne v režime progresívneho videa.
+Nastavenie Rodičovského Zámku
+Heslo Rodičovského Zámku
+Ak chcete rodičovský zámok deaktivovať, ponechajte prázdne.
+Zadajte Heslo Rodičovského Zámku
+Nesprávne heslo rodičovského zámku.
+Rodičovský zámok deaktivovaný.
+Komponenty:
+Chyba – toto heslo nemožno použiť.
+Súbor VMC %s je fragmentovaný. Pokračovať s pamäťovou kartou v slote %d?
+Nastavenie Zvuku
+Zvukové Efekty
+Zvuk Pri Spustení
+Hlasitosť Zvukových Efektov
+Hlasitosť Spúšťacieho Zvuku
+Potvrdiť zmenu režimu videa?
+Vyrovnávacia Pamäť Zoznamu Hier (HDD)
+Oznámenia
+Nastavenie načítané z %s
+Motív načítaný z %s
+Jazyk načítaný z %s
+%s oddiel pripojený.
+Možnosti
+Nastavenie hry uložené.
+Nastavenia %s boli odstránené.
+Pri povolení prepíše existujúce nastavenia kompatibility hry.
+Režim Nastavenia
+Globálné
+Jednotlivé
+Všetko
+Vyberte nastavenia, ktoré chcete odstrániť.
+Fóra Podpory:
+Titul
+Žáner
+Vydané
+Vývojár
+Popis
+Blokové Zariadenia
+Nastavenie Ovládača
+Zapnutie/Vypnutie Správcu Blokových Zariadení.
+Zapnutie/Vypnutie Blokových Zariadení (napr. USB).
+USB hry
+iLink hry
+MX4SIO hry
+PS1 Hry
+Režim Zobrazenia PS1 Her
+POPSTARTER.ELF nebol nájdený v '%s'!
+Súbor VCD '%s' nebol nájdený!
+Pri premenovaní súboru došlo k chybe.
+Pri mazaní súboru došlo k chybe.
+Nikdy nekupujte OPEN-PS2-LOADER (OPL), namiesto toho ho získajte zadarmo na:
+ifcaro OPL verziu na psx-place.com
+OPL Daily Builds (DB) Verziu na ps2-home.com
