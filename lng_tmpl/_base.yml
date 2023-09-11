@@ -680,3 +680,21 @@ gui_strings:
   string: Default Theme Music
 - label: DEF_BGM_PATH_HINT
   string: Set path to stream music for internal theme.
+- label: ELM
+  string: PS1 Games
+- label: ELMMODE
+  string: PS1 Games Display Mode
+- label: ELM_LAUNCH_POPSTARTER_NOTFOUND
+  string: POPSTARTER.ELF not found at '%s'!
+- label: ELM_LAUNCH_VCD_NOTFOUND
+  string: VCD file '%s' not found!
+- label: ELM_RENAME_ERROR
+  string: An error occurred while renaming the file.
+- label: ELM_DELETE_ERROR
+  string: An error occurred while deleting the file.
+- label: OPL_FREE
+  string: 'Never buy OPEN-PS2-LOADER (OPL), instead get it free at:'
+- label: OPL_IFCARO
+  string: ifcaro OPL version at psx-place.com
+- label: OPL_DB
+  string: OPL Daily Builds (DB) version at ps2-home.com
