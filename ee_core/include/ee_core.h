@@ -22,9 +22,8 @@
 #include <smod.h>
 
 #ifdef __EESIO_DEBUG
-#include <sio.h>
-#define DPRINTF(args...) sio_printf(args)
-#define DINIT()          sio_init(38400, 0, 0, 0, 0)
+#define DPRINTF(args...) ;
+#define DINIT()          ;
 #else
 #define DPRINTF(args...) \
     do {                 \
@@ -39,6 +38,8 @@ extern int set_reg_disabled;
 extern int iop_reboot_count;
 
 extern int padOpen_hooked;
+
+extern int enforceLanguage;
 
 enum ETH_OP_MODES {
     ETH_OP_MODE_AUTO = 0,
@@ -85,6 +86,7 @@ extern int EnableCheatOp;
 #ifdef PADEMU
 extern int EnablePadEmuOp;
 extern int PadEmuSettings;
+extern int PadMacroSettings;
 #endif
 
 extern int EnableDebug;

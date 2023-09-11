@@ -14,6 +14,11 @@
 
 #include "include/hdd.h"
 
+#include "../modules/isofs/zso.h"
+
+extern int probed_fd;
+extern u32 probed_lba;
+
 extern void *icon_sys;
 extern int size_icon_sys;
 extern void *icon_icn;
@@ -402,7 +407,6 @@ void closeFileBuffer(file_buffer_t *fileBuffer)
     }
     free(fileBuffer->buffer);
     free(fileBuffer);
-    fileBuffer = NULL;
 }
 
 // a simple maximum of two
@@ -494,6 +498,20 @@ int GetSystemRegion(void)
     return ConsoleRegion;
 }
 
+void logfile(char *text)
+{
+    int fd = open("mass:/opl_log.txt", O_APPEND | O_CREAT | O_WRONLY);
+    write(fd, text, strlen(text));
+    close(fd);
+}
+
+void logbuffer(char *path, void *buf, size_t size)
+{
+    int fd = open(path, O_CREAT | O_TRUNC | O_WRONLY);
+    write(fd, buf, size);
+    close(fd);
+}
+
 int CheckPS2Logo(int fd, u32 lba)
 {
     u8 logo[12 * 2048] ALIGNED(64);
@@ -504,8 +522,11 @@ int CheckPS2Logo(int fd, u32 lba)
     char text[1024];
 
     w = 0;
-    if ((fd > 0) && (lba == 0)) // BDM_MODE & ETH_MODE
+    memset(logo, 0, sizeof(logo));
+    if ((fd > 0) && (lba == 0)) { // BDM_MODE & ETH_MODE
+        lseek(fd, 0, SEEK_SET);
         w = read(fd, logo, sizeof(logo)) == sizeof(logo);
+    }
     if ((lba > 0) && (fd == 0)) {       // HDD_MODE
         for (k = 0; k <= 12 * 4; k++) { // NB: Disc sector size (2048 bytes) and HDD sector size (512 bytes) differ, hence why we multiplied the number of sectors (12) by 4.
             w = !(hddReadSectors(lba + k, 1, buffer));
@@ -515,8 +536,16 @@ int CheckPS2Logo(int fd, u32 lba)
         }
     }
 
-    if (w) {
+    if (*(u32 *)logo == ZSO_MAGIC) {
+        // initialize ZSO
+        ziso_init((ZISO_header *)logo, *(u32 *)((u8 *)logo + sizeof(ZISO_header)));
+        probed_fd = fd;
+        probed_lba = lba;
+        // read ZISO data
+        w = (ziso_read_sector(logo, 0, 12) == 12);
+    }
 
+    if (w) {
         u8 key = logo[0];
         if (logo[0] != 0) {
             for (j = 0; j < (12 * 2048); j++) {

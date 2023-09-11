@@ -107,13 +107,13 @@ struct UIItem diaNetConfig[] = {
 
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_PORT}}},
     {UI_SPACER},
-    {UI_INT, NETCFG_SHARE_PORT, 1, 1, -1, 0, 0, {.intvalue = {445, 445, 0, 1024}}},
+    {UI_INT, NETCFG_SHARE_PORT, 1, 1, -1, 0, 0, {.intvalue = {445, 445, 0, 65353}}},
     {UI_BREAK},
 
     //START of OPL_DB tweaks
     // {UI_BREAK},
-
     //END of OPL_DB tweaks
+
     //  ---- SMB share name ----
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_SHARE}}},
     {UI_SPACER},
@@ -261,11 +261,23 @@ struct UIItem diaConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_DEFDEVICE}}},
     {UI_SPACER},
     {UI_ENUM, CFG_DEFDEVICE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"BDM Cache", -1}}},
+    {UI_SPACER},
+    {UI_INT, CFG_BDMCACHE, 1, 1, -1, 0, 0, {.intvalue = {16, 8, 0, 32, NULL}}},
+    {UI_BREAK},
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"HDD Cache", -1}}},
+    {UI_SPACER},
+    {UI_INT, CFG_HDDCACHE, 1, 1, -1, 0, 0, {.intvalue = {8, 0, 0, 32, NULL}}},
+    {UI_BREAK},
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {"SMB Cache", -1}}},
+    {UI_SPACER},
+    {UI_INT, CFG_SMBCACHE, 1, 1, -1, 0, 0, {.intvalue = {16, 4, 0, 32, NULL}}},
     //START of OPL_DB tweaks
     // {UI_BREAK},
     {UI_SPLITTER},
     //END of OPL_DB tweaks
-
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},
@@ -831,6 +843,51 @@ struct UIItem diaPadEmuInfo[] = {
 
     // end of dialog
     {UI_TERMINATOR}};
+
+struct UIItem diaPadMacroConfig[] = {
+    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACRO_SETTINGS}}},
+    {UI_SPLITTER},
+
+    {UI_LABEL, 0, 1, 1, -1, -50, 0, {.label = {NULL, _STR_SETTINGS_SOURCE}}},
+    {UI_SPACER},
+    {UI_ENUM, PADMACRO_CFG_SOURCE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACRO_SLOWDOWN}}},
+    {UI_BREAK},
+    {UI_LABEL, 0, 1, 1, -1, -20, 0, {.label = {NULL, _STR_LEFT_ANALOG}}},
+    {UI_ENUM, PADMACRO_SLOWDOWN_L, 1, 1, _STR_HINT_PADMACRO_SLOWDOWN_AXIS, -20, 0, {.intvalue = {0, 0}}},
+    {UI_SPACER},
+    {UI_LABEL, 0, 1, 1, -1, -20, 0, {.label = {NULL, _STR_RIGHT_ANALOG}}},
+    {UI_ENUM, PADMACRO_SLOWDOWN_R, 1, 1, _STR_HINT_PADMACRO_SLOWDOWN_AXIS, -20, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+    {UI_ENUM, PADMACRO_SLOWDOWN_TOGGLE_L, 1, 1, -1, -40, 0, {.intvalue = {0, 0}}},
+    {UI_SPACER},
+    {UI_ENUM, PADMACRO_SLOWDOWN_TOGGLE_R, 1, 1, -1, -40, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACRO_INVERT_AXIS}}},
+    {UI_BREAK},
+    {UI_LABEL, 0, 1, 1, -1, -10, 0, {.label = {"LX:", -1}}},
+    {UI_BOOL, PADMACRO_INVERT_LX, 1, 1, _STR_HINT_PADMACRO_INVERT_AXIS, -10, 0, {.intvalue = {0, 0}}},
+    {UI_LABEL, 0, 1, 1, -1, -10, 0, {.label = {"LY:", -1}}},
+    {UI_BOOL, PADMACRO_INVERT_LY, 1, 1, _STR_HINT_PADMACRO_INVERT_AXIS, -10, 0, {.intvalue = {0, 0}}},
+    {UI_LABEL, 0, 1, 1, -1, -10, 0, {.label = {"RX:", -1}}},
+    {UI_BOOL, PADMACRO_INVERT_RX, 1, 1, _STR_HINT_PADMACRO_INVERT_AXIS, -10, 0, {.intvalue = {0, 0}}},
+    {UI_LABEL, 0, 1, 1, -1, -10, 0, {.label = {"LY:", -1}}},
+    {UI_BOOL, PADMACRO_INVERT_RY, 1, 1, _STR_HINT_PADMACRO_INVERT_AXIS, -10, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -20, 0, {.label = {NULL, _STR_TURBO_SPEED}}},
+    {UI_SPACER},
+    {UI_INT, PADMACRO_TURBO_SPEED, 1, 1, _STR_HINT_TURBO_SPEED, -10, 0, {.intvalue = {4, 3, 1, 4}}},
+    {UI_BREAK},
+
+
+    {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
+
+    // end of dialog
+    {UI_TERMINATOR}};
 #endif
 
 // About Menu
@@ -839,65 +896,62 @@ struct UIItem diaAbout[] = {
     //START of OPL_DB tweaks
     {UI_SPLITTER},
 
-    // Build Options
-    {UI_BREAK},
-    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_BUILD_DETAILS}}},
-    {UI_SPACER},
-    {UI_LABEL, ABOUT_BUILD_DETAILS, 1, 1, -1, 0, 0, {.label = {NULL, -1}}},
-    //END of OPL_DB tweaks
-    {UI_SPLITTER},
-
     // Coders
     {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_DEVS}}},
     {UI_BREAK},
 
     {UI_SPACER},
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {"BatRastard, belek666, crazyc, danielb, dlanor, doctorxyz, hominem.te.esse,", -1}}},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"BatRastard - belek666 - crazyc - dlanor - doctorxyz", -1}}},
     {UI_BREAK},
 
     {UI_SPACER},
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {"ifcaro, izdubar, Jay-Jay, jimmikaelkael, Maximus32, misfire, Polo35,", -1}}},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"hominem.te.esse - ifcaro - izdubar - jimmikaelkael - KrahJohlito", -1}}},
     {UI_BREAK},
 
     {UI_SPACER},
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"Maximus32 - misfire - Polo35 - reprep - SP193 - volca", -1}}},
+    {UI_BREAK},
+
     //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {"ps2netbox/ps2usb, reprep, SP193, volca, ... and the anonymous ...", -1}}},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_SPACER},
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"danielb - Jay-Jay - ps2netbox/ps2usb", -1}}},
+    {UI_BREAK},
+    //END of OPL_DB tweaks  
+
+    {UI_SPACER},
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"... and the anonymous ...", -1}}},
+    {UI_BREAK},
+
+    {UI_BREAK},
 
     // Quality Assurance
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_QANDA}}},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {NULL, _STR_QANDA}}},
     {UI_BREAK},
 
     {UI_SPACER},
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {"algol, Berion, El_Patas, EP, gledson999, lee4, jolek, LocalH,", -1}}},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"algol - Berion - El_Patas - EP - gledson999 - jolek - lee4", -1}}},
     {UI_BREAK},
 
     {UI_SPACER},
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {"RandQalan, ShaolinAssassin, yoshi314, and zero35.", -1}}},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"LocalH - RandQalan - ShaolinAssassin - yoshi314 - zero35", -1}}},
+    {UI_BREAK},
+
+    {UI_BREAK},
 
     // Network update
-    //START of OPL_DB tweaks
-    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_NET_UPDATE}}},
-    //END of OPL_DB tweaks
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {NULL, _STR_NET_UPDATE}}},
     {UI_BREAK},
 
     {UI_SPACER},
     {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"icyson55", -1}}},
-    //START of OPL_DB tweaks
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
+
+    // Build Options
+    {UI_BREAK},
+    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_BUILD_DETAILS}}},
+    {UI_SPACER},
+    {UI_LABEL, ABOUT_BUILD_DETAILS, 1, 1, -1, 0, 0, {.label = {NULL, -1}}},
+    {UI_BREAK},
 
     //START of OPL_DB tweaks
     // OPL Free Statement
@@ -980,6 +1034,11 @@ struct UIItem diaAudioConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_BOOT_SND}}},
     {UI_SPACER},
     {UI_BOOL, CFG_BOOT_SND, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_BGM}}},
+    {UI_SPACER},
+    {UI_BOOL, CFG_BGM, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
     {UI_SPLITTER},
 
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_SFX_VOLUME}}},
@@ -990,6 +1049,16 @@ struct UIItem diaAudioConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_BOOT_SND_VOLUME}}},
     {UI_SPACER},
     {UI_INT, CFG_BOOT_SND_VOLUME, 1, 1, -1, 0, 0, {.intvalue = {0, 0, 0, 100}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_BGM_VOLUME}}},
+    {UI_SPACER},
+    {UI_INT, CFG_BGM_VOLUME, 1, 1, -1, 0, 0, {.intvalue = {0, 0, 0, 100}}},
+    {UI_SPLITTER},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_DEF_BGM_PATH}}},
+    {UI_SPACER},
+    {UI_STRING, CFG_DEFAULT_BGM_PATH, 1, 1, _STR_DEF_BGM_PATH_HINT, 0, 0, {.stringvalue = {"", "", NULL}}},
     //START of OPL_DB tweaks
     // {UI_BREAK},
     {UI_SPLITTER},
@@ -1021,11 +1090,49 @@ struct UIItem diaControllerConfig[] = {
 #ifdef PADEMU
     {UI_BREAK},
     {UI_BUTTON, PADEMU_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADEMUCONFIG}}},
+    {UI_BREAK},
+    {UI_BUTTON, PADMACRO_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACROCONFIG}}},
     //START of OPL_DB tweaks
     // {UI_BREAK},
     {UI_SPLITTER},
-//END of OPL_DB tweaks
+    //END of OPL_DB tweaks
 #endif
+    // buttons
+    {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
+    {UI_BREAK},
+    // end of dialog
+    {UI_TERMINATOR}};
+
+struct UIItem diaOSDConfig[] = {
+    {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OSD_SETTINGS}}},
+    {UI_SPLITTER},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_SETTINGS_SOURCE}}},
+    {UI_SPACER},
+    {UI_ENUM, OSD_LANGUAGE_SOURCE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_ENABLE_LNG}}},
+    {UI_SPACER},
+    {UI_BOOL, OSD_LANGUAGE_ENABLE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -41, 0, {.label = {NULL, _STR_OSD_SETTINGS_LNG}}},
+    {UI_SPACER},
+    {UI_ENUM, OSD_LANGUAGE_VALUE, 1, 1, _STR_HINT_OSD_SETTINGS_LNG, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -41, 0, {.label = {NULL, _STR_OSD_SETTINGS_TVASPECT}}},
+    {UI_SPACER},
+    {UI_ENUM, OSD_TVASPECT_VALUE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
+    {UI_LABEL, 0, 1, 1, -1, -41, 0, {.label = {NULL, _STR_OSD_SETTINGS_VMODE}}},
+    {UI_SPACER},
+    {UI_ENUM, OSD_VMODE_VALUE, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
+    {UI_BREAK},
+
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},

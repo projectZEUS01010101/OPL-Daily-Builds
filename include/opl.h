@@ -39,6 +39,7 @@
 #include "config.h"
 
 #include "include/hddsupport.h"
+#include "include/supportbase.h"
 
 // Last Played Auto Start
 #include <time.h>
@@ -81,6 +82,9 @@ void moduleUpdateMenu(int mode, int themeChanged, int langChanged);
 void handleLwnbdSrv();
 void deinit(int exception, int modeSelected);
 
+// Shutdown minimal services initiated for auto loading.
+void miniDeinit(config_set_t *configSet);
+
 extern char *gBaseMCDir;
 
 enum ETH_OP_MODES {
@@ -121,6 +125,9 @@ extern int gAPPStartMode;
 //START of OPL_DB tweaks
 extern int gELMStartMode;
 //END of OPL_DB tweaks
+extern int bdmCacheSize;
+extern int hddCacheSize;
+extern int smbCacheSize;
 
 extern int gEnableILK;
 extern int gEnableMX4SIO;
@@ -139,12 +146,21 @@ extern int gHDDGameListCache;
 
 extern int gEnableSFX;
 extern int gEnableBootSND;
+extern int gEnableBGM;
 extern int gSFXVolume;
 extern int gBootSndVolume;
+extern int gBGMVolume;
+extern char gDefaultBGMPath[128];
 
 extern int gCheatSource;
 extern int gGSMSource;
 extern int gPadEmuSource;
+
+extern int gOSDLanguageValue;
+extern int gOSDTVAspectRatio;
+extern int gOSDVideOutput;
+extern int gOSDLanguageEnable;
+extern int gOSDLanguageSource;
 
 extern int showCfgPopup;
 
@@ -157,6 +173,8 @@ extern int showCfgPopup;
 #ifdef PADEMU
 extern int gEnablePadEmu;
 extern int gPadEmuSettings;
+extern int gPadMacroSource;
+extern int gPadMacroSettings;
 #endif
 
 // ------------------------------------------------------------------------------------------------------------------------
@@ -193,6 +211,7 @@ extern unsigned char gDefaultSelTextColor[3];
 extern unsigned char gDefaultUITextColor[3];
 
 extern hdl_game_info_t *gAutoLaunchGame;
+extern base_game_info_t *gAutoLaunchBDMGame;
 extern char *gHDDPrefix;
 extern char gOPLPart[128];
 

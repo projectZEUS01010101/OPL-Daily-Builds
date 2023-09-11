@@ -12,7 +12,7 @@ Open PS2 Loader (OPL) is a 100% Open source game and application loader for
 the PS2 and PS3 units. It supports three categories of devices: USB mass
 storage devices, SMB shares and the PlayStation 2 HDD unit. USB devices and
 SMB shares support USBExtreme and \*.ISO formats while PS2 HDD supports HDLoader
-format. It's now the most compatible homebrew loader.
+format, all devices also support ZSO format (compressed ISO). It's now the most compatible homebrew loader.
 
 OPL developed continuously - anyone can contribute improvements to
 the project due to its open-source nature.
@@ -225,6 +225,37 @@ Not supported.
 </details>
 
 <details>
+  <summary> <b> ZSO Format </b> </summary>
+<p>
+
+As of version 1.2.0, compressed ISO files in ZSO format is supported by OPL.
+
+To handle ZSO files, a python script (ziso.py) is included in the pc folder of this repository.
+It requires Python 3 and the LZ4 library:
+  
+  ```sh
+pip install lz4
+```
+  
+To compress an ISO file to ZSO:
+  
+  ```sh
+python ziso.py -c 2 "input.iso" "output.zso"
+```
+  
+To decompress a ZSO back to the original ISO:
+  
+```sh
+python ziso.py -c 0 "input.zso" "output.iso"
+```
+  
+You can copy ZSO files to the same folder as your ISOs and they will be detected by OPL.
+To install onto internal HDD, you can use the latest version of HDL-Dump.
+  
+</p>
+</details>
+
+<details>
   <summary> <b> PS3 BC </b> </summary>
 <p>
 
@@ -244,3 +275,20 @@ Open PS2 Loader needs the [**latest PS2SDK**](https://github.com/ps2dev/ps2sdk)
 </p>
 </details>
 
+
+</p>
+</details>
+
+<details>
+  <summary> <b> Frequent Issues </b> </summary>
+<p>
+
+### OPL Freezes on logo or grey screen
+
+ Sometimes OPL freezes when loading config files made by older OPL builds.
+> hold __`START`__ while OPL initializes to make it skip the config loading, then, you can save your own settings.
+> fixing the issue.
+
+### Game freezes on white screen
+
+> Main game executable could not be found. Either game is fragmented or image is corrupted

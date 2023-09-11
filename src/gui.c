@@ -426,7 +426,7 @@ void guiShowNetCompatUpdateSingle(int id, item_list_t *support, config_set_t *co
     if (guiMsgBox(_l(_STR_CONFIRMATION_SETTINGS_UPDATE), 1, NULL)) {
         guiRenderTextScreen(_l(_STR_PLEASE_WAIT));
 
-        if ((result = ethLoadInitModules()) == 0) {
+        if ((ethLoadInitModules()) == 0) {
             if ((result = oplUpdateGameCompatSingle(id, support, configSet)) == OPL_COMPAT_UPDATE_STAT_DONE) {
                 configSetInt(configSet, CONFIG_ITEM_CONFIGSOURCE, CONFIG_SOURCE_DLOAD);
             }
@@ -483,6 +483,10 @@ void guiShowConfig()
     diaSetEnum(diaConfig, CFG_ELMMODE, deviceModes);
     //END of OPL_DB tweaks
 
+    diaSetInt(diaConfig, CFG_BDMCACHE, bdmCacheSize);
+    diaSetInt(diaConfig, CFG_HDDCACHE, hddCacheSize);
+    diaSetInt(diaConfig, CFG_SMBCACHE, smbCacheSize);
+
     diaSetInt(diaConfig, CFG_DEBUG, gEnableDebug);
     diaSetInt(diaConfig, CFG_PS2LOGO, gPS2Logo);
     diaSetInt(diaConfig, CFG_HDDGAMELISTCACHE, gHDDGameListCache);
@@ -523,6 +527,9 @@ void guiShowConfig()
         diaGetInt(diaConfig, CFG_HDDMODE, &gHDDStartMode);
         diaGetInt(diaConfig, CFG_ETHMODE, &gETHStartMode);
         diaGetInt(diaConfig, CFG_APPMODE, &gAPPStartMode);
+        diaGetInt(diaConfig, CFG_BDMCACHE, &bdmCacheSize);
+        diaGetInt(diaConfig, CFG_HDDCACHE, &hddCacheSize);
+        diaGetInt(diaConfig, CFG_SMBCACHE, &smbCacheSize);
         //START of OPL_DB tweaks
         diaGetInt(diaConfig, CFG_ELMMODE, &gELMStartMode);
         //END of OPL_DB tweaks
@@ -628,9 +635,11 @@ void guiShowUIConfig(void)
         , NULL};
     // clang-format on
     int previousVMode;
+    int previousTheme;
 
 reselect_video_mode:
     previousVMode = gVMode;
+    previousTheme = thmGetGuiValue();
     diaSetEnum(diaUIConfig, UICFG_THEME, (const char **)thmGetGuiList());
     diaSetEnum(diaUIConfig, UICFG_LANG, (const char **)lngGetGuiList());
     diaSetEnum(diaUIConfig, UICFG_VMODE, vmodeNames);
@@ -670,8 +679,14 @@ reselect_video_mode:
         if (ret == UICFG_RESETCOL)
             setDefaultColors();
 
+        if (previousTheme != themeID && isBgmPlaying())
+            bgmStop();
+
         applyConfig(themeID, langID);
         sfxInit(0);
+
+        if (gEnableBGM && !isBgmPlaying())
+            bgmStart();
     }
 
     if (previousVMode != gVMode) {
@@ -834,9 +849,15 @@ static void guiSetAudioSettingsState(void)
 {
     diaGetInt(diaAudioConfig, CFG_SFX, &gEnableSFX);
     diaGetInt(diaAudioConfig, CFG_BOOT_SND, &gEnableBootSND);
+    diaGetInt(diaAudioConfig, CFG_BGM, &gEnableBGM);
     diaGetInt(diaAudioConfig, CFG_SFX_VOLUME, &gSFXVolume);
     diaGetInt(diaAudioConfig, CFG_BOOT_SND_VOLUME, &gBootSndVolume);
-    sfxVolume();
+    diaGetInt(diaAudioConfig, CFG_BGM_VOLUME, &gBGMVolume);
+    diaGetString(diaAudioConfig, CFG_DEFAULT_BGM_PATH, gDefaultBGMPath, sizeof(gDefaultBGMPath));
+    audioSetVolume();
+
+    if (gEnableBGM && !isBgmPlaying())
+        bgmStart();
 }
 
 static int guiAudioUpdater(int modified)
@@ -852,8 +873,11 @@ void guiShowAudioConfig(void)
 {
     diaSetInt(diaAudioConfig, CFG_SFX, gEnableSFX);
     diaSetInt(diaAudioConfig, CFG_BOOT_SND, gEnableBootSND);
+    diaSetInt(diaAudioConfig, CFG_BGM, gEnableBGM);
     diaSetInt(diaAudioConfig, CFG_SFX_VOLUME, gSFXVolume);
     diaSetInt(diaAudioConfig, CFG_BOOT_SND_VOLUME, gBootSndVolume);
+    diaSetInt(diaAudioConfig, CFG_BGM_VOLUME, gBGMVolume);
+    diaSetString(diaAudioConfig, CFG_DEFAULT_BGM_PATH, gDefaultBGMPath);
 
     diaExecuteDialog(diaAudioConfig, -1, 1, guiAudioUpdater);
 }
@@ -881,8 +905,11 @@ void guiShowControllerConfig(void)
         else
             gSelectButton = KEY_CIRCLE;
 #ifdef PADEMU
-        if (result == PADEMU_GLOBAL_BUTTON)
+        if (result == PADEMU_GLOBAL_BUTTON) {
             guiGameShowPadEmuConfig(1);
+        } else if (result == PADMACRO_GLOBAL_BUTTON) {
+            guiGameShowPadMacroConfig(1);
+        }
 #endif
         applyConfig(-1, -1);
     }
@@ -1247,8 +1274,12 @@ void guiDrawBGPlasma()
 int guiDrawIconAndText(int iconId, int textId, int font, int x, int y, u64 color)
 {
     GSTEXTURE *iconTex = thmGetTexture(iconId);
-    int w = (iconTex->Width * 20) / iconTex->Height;
+    int w = 0;
     int h = 20;
+
+    if (iconTex) {
+        w = (iconTex->Width * 20) / iconTex->Height;
+    }
 
     if (iconTex && iconTex->Mem) {
         y += h >> 1;
@@ -1365,6 +1396,9 @@ static void guiDrawOverlays()
 
     if (prevtime != 0) {
         clock_t diff = curtime - prevtime;
+        if (diff == 0)
+            diff = 1;
+
         // Raw FPS value with 2 decimal places
         float rawfps = ((100 * CLOCKS_PER_SEC) / diff) / 100.0f;
 
@@ -1493,6 +1527,9 @@ void guiMainLoop(void)
     if (gOPLPart[0] != '\0')
         showPartPopup = 1;
 
+    if (gEnableBGM)
+        bgmStart();
+
     while (!gTerminate) {
         guiStartFrame();
 
@@ -1530,6 +1567,10 @@ void guiSetFrameHook(gui_callback_t cback)
 
 void guiSwitchScreen(int target)
 {
+    // Only initiate the transition once or else we could get stuck in an infinite loop.
+    if (screenHandlerTarget != NULL) {
+        return;
+    }
     sfxPlay(SFX_TRANSITION);
     transIndex = 0;
     screenHandlerTarget = &screenHandlers[target];

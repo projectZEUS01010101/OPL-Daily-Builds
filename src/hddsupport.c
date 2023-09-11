@@ -13,11 +13,6 @@
 #include "include/cheatman.h"
 #include "modules/iopcore/common/cdvd_config.h"
 
-#ifdef PADEMU
-#include <libds34bt.h>
-#include <libds34usb.h>
-#endif
-
 #define NEWLIB_PORT_AWARE
 #include <fileXio_rpc.h> // fileXioFormat, fileXioMount, fileXioUmount, fileXioDevctl
 #include <io_common.h>   // FIO_MT_RDWR
@@ -25,6 +20,12 @@
 #include <hdd-ioctl.h>
 
 #define OPL_HDD_MODE_PS2LOGO_OFFSET 0x17F8
+
+#include "../modules/isofs/zso.h"
+
+extern int probed_fd;
+extern u32 probed_lba;
+extern u8 IOBuffer[2048];
 
 static unsigned char hddForceUpdate = 0;
 static unsigned char hddHDProKitDetected = 0;
@@ -208,10 +209,14 @@ void hddLoadModules(void)
         // if detected it loads the specific ATAD module
         hddHDProKitDetected = hddCheckHDProKit();
         if (hddHDProKitDetected) {
+            LOG("[ATAD_HDPRO]:\n");
             ret = sysLoadModuleBuffer(&hdpro_atad_irx, size_hdpro_atad_irx, 0, NULL);
+            LOG("[XHDD]:\n");
             sysLoadModuleBuffer(&xhdd_irx, size_xhdd_irx, 6, "-hdpro");
         } else {
+            LOG("[ATAD]:\n");
             ret = sysLoadModuleBuffer(&ps2atad_irx, size_ps2atad_irx, 0, NULL);
+            LOG("[XHDD]:\n");
             sysLoadModuleBuffer(&xhdd_irx, size_xhdd_irx, 0, NULL);
         }
         if (ret < 0) {
@@ -220,6 +225,7 @@ void hddLoadModules(void)
             return;
         }
 
+        LOG("[HDD]:\n");
         ret = sysLoadModuleBuffer(&ps2hdd_irx, size_ps2hdd_irx, sizeof(hddarg), hddarg);
         if (ret < 0) {
             LOG("HDD: No HardDisk Drive detected.\n");
@@ -233,6 +239,9 @@ void hddLoadModules(void)
             setErrorMessageWithCode(_STR_HDD_NOT_CONNECTED_ERROR, ERROR_HDD_NOT_DETECTED);
             return;
         }
+
+
+        LOG("[PS2FS]:\n");
         //START of OPL_DB tweaks
         ret = sysLoadModuleBuffer(&ps2fs_irx, size_ps2fs_irx, sizeof(pfsarg), pfsarg);
         //END of OPL_DB tweaks
@@ -350,7 +359,7 @@ void hddLaunchGame(int id, config_set_t *configSet)
     int i, size_irx = 0;
     int EnablePS2Logo = 0;
     int result;
-    void **irx = NULL;
+    void *irx = NULL;
     char filename[32];
     hdl_game_info_t *game;
     struct cdvdman_settings_hdd *settings;
@@ -501,27 +510,39 @@ void hddLaunchGame(int id, config_set_t *configSet)
     if (gPS2Logo)
         EnablePS2Logo = CheckPS2Logo(0, game->start_sector + OPL_HDD_MODE_PS2LOGO_OFFSET);
 
-    if (gAutoLaunchGame == NULL) {
+    // Check for ZSO to correctly adjust layer1 start
+    settings->common.layer1_start = 0; // cdvdman will read it from APA header
+    hddReadSectors(game->start_sector + OPL_HDD_MODE_PS2LOGO_OFFSET, 1, IOBuffer);
+    if (*(u32 *)IOBuffer == ZSO_MAGIC) {
+        probed_fd = 0;
+        probed_lba = game->start_sector + OPL_HDD_MODE_PS2LOGO_OFFSET;
+        ziso_init((ZISO_header *)IOBuffer, *(u32 *)((u8 *)IOBuffer + sizeof(ZISO_header)));
+        ziso_read_sector(IOBuffer, 16, 1);
+        u32 maxLBA = *(u32 *)(IOBuffer + 80);
+        if (maxLBA > 0 && maxLBA < ziso_total_block) {   // dual layer check
+            settings->common.layer1_start = maxLBA - 16; // adjust second layer start
+        }
+    }
+
+    if (gAutoLaunchGame == NULL)
         deinit(NO_EXCEPTION, HDD_MODE); // CAREFUL: deinit will call hddCleanUp, so hddGames/game will be freed
-    } else {
-        ioBlockOps(1);
-#ifdef PADEMU
-        ds34usb_reset();
-        ds34bt_reset();
-#endif
-        configFree(configSet);
+    else {
+        miniDeinit(configSet);
 
         free(gAutoLaunchGame);
         gAutoLaunchGame = NULL;
 
         fileXioUmount("pfs0:");
         fileXioDevctl("pfs:", PDIOC_CLOSEALL, NULL, 0, NULL, 0);
-
-        ioEnd();
-        configEnd();
     }
 
-    sysLaunchLoaderElf(filename, "HDD_MODE", size_irx, irx, size_mcemu_irx, &hdd_mcemu_irx, EnablePS2Logo, compatMode);
+    settings->common.fakemodule_flags |= FAKE_MODULE_FLAG_DEV9;
+    settings->common.fakemodule_flags |= FAKE_MODULE_FLAG_ATAD;
+
+    // adjust ZSO cache
+    settings->common.zso_cache = hddCacheSize;
+
+    sysLaunchLoaderElf(filename, "HDD_MODE", size_irx, irx, size_mcemu_irx, hdd_mcemu_irx, EnablePS2Logo, compatMode);
 }
 
 static config_set_t *hddGetConfig(int id)

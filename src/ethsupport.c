@@ -279,17 +279,21 @@ static int ethLoadModules(void)
 
         sysInitDev9();
 
+        LOG("[NETMAN]:\n");
         if (sysLoadModuleBuffer(&netman_irx, size_netman_irx, 0, NULL) >= 0) {
             NetManInit();
-
+            LOG("[SMSUTILS]:\n");
             sysLoadModuleBuffer(&smsutils_irx, size_smsutils_irx, 0, NULL);
+            LOG("[SMAP]:\n");
             if (sysLoadModuleBuffer(&smap_irx, size_smap_irx, 0, NULL) >= 0) {
                 // Before the network stack is loaded, attempt to set the link settings in order to avoid needing double-initialization of the IF.
                 // But do not fail here because there is currently no way to re-start initialization.
                 ethApplyNetIFConfig();
-
+                LOG("[PS2IP]:\n");
                 if (sysLoadModuleBuffer(&ps2ip_irx, size_ps2ip_irx, 0, NULL) >= 0) {
+                    LOG("[PS2IPS]:\n");
                     sysLoadModuleBuffer(&ps2ips_irx, size_ps2ips_irx, 0, NULL);
+                    LOG("[HTTPCLIENT]:\n");
                     sysLoadModuleBuffer(&httpclient_irx, size_httpclient_irx, 0, NULL);
                     ps2ip_init();
                     HttpInit();
@@ -396,7 +400,9 @@ static void smbLoadModules(void)
 
     if (ret == 0) {
         gNetworkStartup = ERROR_ETH_MODULE_SMBMAN_FAILURE;
+        LOG("[SMBMAN]:\n");
         if (sysLoadModuleBuffer(&smbman_irx, size_smbman_irx, 0, NULL) >= 0) {
+            LOG("[NBNS]:\n");
             sysLoadModuleBuffer(&nbns_irx, size_nbns_irx, 0, NULL);
             nbnsInit();
 
@@ -480,13 +486,11 @@ static int ethNeedsUpdate(void)
 
 static int ethUpdateGameList(void)
 {
-    int result;
-
     if (gPCShareName[0]) {
         if (gNetworkStartup != 0)
             return 0;
 
-        if ((result = sbReadList(&ethGames, ethPrefix, &ethULSizePrev, &ethGameCount)) < 0) {
+        if ((sbReadList(&ethGames, ethPrefix, &ethULSizePrev, &ethGameCount)) < 0) {
             gNetworkStartup = ERROR_ETH_SMB_LISTGAMES;
             ethDisplayErrorStatus();
         }
@@ -631,7 +635,7 @@ static void ethLaunchGame(int id, config_set_t *configSet)
         saveConfig(CONFIG_LAST, 0);
     }
 
-    compatmask = sbPrepare(game, configSet, size_smb_cdvdman_irx, &smb_cdvdman_irx, &i);
+    compatmask = sbPrepare(game, configSet, size_smb_cdvdman_irx, smb_cdvdman_irx, &i);
 
     if ((result = sbLoadCheats(ethPrefix, game->startup)) < 0) {
         switch (result) {
@@ -688,7 +692,7 @@ static void ethLaunchGame(int id, config_set_t *configSet)
             layer1_offset = layer1_start;
     }
 
-    if (sbProbeISO9660_64(partname, game, layer1_offset) != 0) {
+    if (sbProbeISO9660(partname, game, layer1_offset) != 0) {
         layer1_start = 0;
         LOG("DVD detected.\n");
     } else {
@@ -701,7 +705,13 @@ static void ethLaunchGame(int id, config_set_t *configSet)
         strcpy(filename, game->startup);
     deinit(NO_EXCEPTION, ETH_MODE); // CAREFUL: deinit will call ethCleanUp, so ethGames/game will be freed
 
-    sysLaunchLoaderElf(filename, "ETH_MODE", size_smb_cdvdman_irx, &smb_cdvdman_irx, size_mcemu_irx, &smb_mcemu_irx, EnablePS2Logo, compatmask);
+    settings->common.fakemodule_flags |= FAKE_MODULE_FLAG_DEV9;
+    settings->common.fakemodule_flags |= FAKE_MODULE_FLAG_SMAP;
+
+    // adjust ZSO cache
+    settings->common.zso_cache = smbCacheSize;
+
+    sysLaunchLoaderElf(filename, "ETH_MODE", size_smb_cdvdman_irx, smb_cdvdman_irx, size_mcemu_irx, smb_mcemu_irx, EnablePS2Logo, compatmask);
 }
 
 static config_set_t *ethGetConfig(int id)
@@ -786,6 +796,8 @@ static int ethReadNetConfig(void)
     t_ip_info ip_info;
     int result;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
     if ((result = ps2ip_getconfig("sm0", &ip_info)) >= 0) {
         lastIP = *(struct ip4_addr *)&ip_info.ipaddr;
         lastNM = *(struct ip4_addr *)&ip_info.netmask;
@@ -795,6 +807,7 @@ static int ethReadNetConfig(void)
         ip4_addr_set_zero(&lastNM);
         ip4_addr_set_zero(&lastGW);
     }
+#pragma GCC diagnostic pop
 
     return result;
 }
@@ -873,6 +886,8 @@ static int ethApplyIPConfig(void)
         IP4_ADDR(&dns, ps2_dns[0], ps2_dns[1], ps2_dns[2], ps2_dns[3]);
         dns_curr = dns_getserver(0);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
         // Check if it's the same. Otherwise, apply the new configuration.
         if ((ps2_ip_use_dhcp != ip_info.dhcp_enabled) || (!ps2_ip_use_dhcp &&
                                                           (!ip_addr_cmp(&ipaddr, (struct ip4_addr *)&ip_info.ipaddr) ||
@@ -899,6 +914,7 @@ static int ethApplyIPConfig(void)
                 dns_setserver(0, &dns);
         } else
             result = 0;
+#pragma GCC diagnostic pop
     }
 
     return result;

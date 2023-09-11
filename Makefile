@@ -63,31 +63,13 @@ ifneq ($(GIT_TAG),latest)
 endif
 endif
 
-#START of OPL_DB tweaks
-FRONTEND_OBJS = pad.o fntsys.o renderman.o menusys.o OSDHistory.o system.o lang.o config.o hdd.o dialogs.o \
-		dia.o ioman.o texcache.o themes.o supportbase.o bdmsupport.o ethsupport.o hddsupport.o \
-		appsupport.o elmsupport.o gui.o guigame.o textures.o opl.o atlas.o nbns.o httpclient.o gsm.o cheatman.o sound.o ps2cnf.o
-
-GFX_OBJS =	usb_icon.o hdd_icon.o eth_icon.o app_icon.o elm_icon.o \
-		usb_bd_icon.o ilk_bd_icon.o m4s_bd_icon.o \
-		cross_icon.o triangle_icon.o circle_icon.o square_icon.o select_icon.o start_icon.o \
-		left_icon.o right_icon.o up_icon.o down_icon.o \
-		load0.o load1.o load2.o load3.o load4.o load5.o load6.o load7.o \
-		background.o info.o cover.o disc.o screen.o logo.o case.o background2.o \
-		ELF.o HDL.o ISO.o UL.o CD.o DVD.o Aspect_s.o Aspect_w.o Aspect_w1.o Aspect_w2.o \
-		Device_1.o Device_2.o Device_3.o Device_4.o Device_5.o Device_6.o Device_all.o \
-		Rating_0.o Rating_1.o Rating_2.o Rating_3.o Rating_4.o Rating_5.o \
-		Scan_240p.o Scan_240p1.o Scan_480i.o Scan_480p.o Scan_480p1.o Scan_480p2.o \
-		Scan_480p3.o Scan_480p4.o Scan_480p5.o Scan_576i.o Scan_576p.o Scan_720p.o \
-		Scan_1080i.o Scan_1080i2.o Scan_1080p.o Vmode_multi.o Vmode_ntsc.o Vmode_pal.o \
-		poeveticanew.o icon_sys.o icon_icn.o
-
-AUDIO_OBJS =	boot.o cancel.o confirm.o cursor.o message.o transition.o
-
-MISC_OBJS =	icon_sys_A.o icon_sys_J.o icon_sys_C.o conf_theme_OPL.o
+FRONTEND_OBJS = pad.o xparam.o fntsys.o renderman.o menusys.o OSDHistory.o system.o lang.o lang_internal.o config.o hdd.o dialogs.o \
+		dia.o ioman.o texcache.o themes.o supportbase.o bdmsupport.o ethsupport.o hddsupport.o zso.o lz4.o \
+		appsupport.o gui.o guigame.o textures.o opl.o atlas.o nbns.o httpclient.o gsm.o cheatman.o sound.o ps2cnf.o \
+		elmsupport.o	# OPL_DB tweak
 
 IOP_OBJS =	iomanx.o filexio.o ps2fs.o usbd.o bdmevent.o \
-		bdm.o bdmfs_vfat.o usbmass_bd.o iLinkman.o IEEE1394_bd.o mx4sio_bd.o \
+		bdm.o bdmfs_fatfs.o usbmass_bd.o iLinkman.o IEEE1394_bd.o mx4sio_bd.o \
 		ps2atad.o hdpro_atad.o poweroff.o ps2hdd.o xhdd.o genvmc.o lwnbdsvr.o \
 		ps2dev9.o smsutils.o ps2ip.o smap.o isofs.o nbns-iop.o \
 		sio2man.o padman.o mcman.o mcserv.o \
@@ -97,10 +79,30 @@ IOP_OBJS =	iomanx.o filexio.o ps2fs.o usbd.o bdmevent.o \
 		libsd.o audsrv.o
 
 EECORE_OBJS = ee_core.o ioprp.o util.o \
-		elfldr.o udnl.o imgdrv.o eesync.o \
+		udnl.o imgdrv.o eesync.o \
 		bdm_cdvdman.o IOPRP_img.o smb_cdvdman.o \
 		hdd_cdvdman.o hdd_hdpro_cdvdman.o cdvdfsv.o \
-		ingame_smstcpip.o smap_ingame.o smbman.o smbinit.o
+		ingame_smstcpip.o smap_ingame.o smbman.o smbinit.o \
+		elfldr.o	# OPL_DB tweak
+
+PNG_ASSETS = load0 load1 load2 load3 load4 load5 load6 load7 usb usb_bd ilk_bd \
+	m4s_bd hdd eth app cross triangle circle square select start left right up down \
+	background info cover disc screen ELF HDL ISO UL CD DVD Aspect_s Aspect_w Aspect_w1 \
+	Aspect_w2 Device_1 Device_2 Device_3 Device_4 Device_5 Device_6 Device_all Rating_0 \
+	Rating_1 Rating_2 Rating_3 Rating_4 Rating_5 Scan_240p Scan_240p1 Scan_480i Scan_480p \
+	Scan_480p1 Scan_480p2 Scan_480p3 Scan_480p4 Scan_480p5 Scan_576i Scan_576p Scan_720p \
+	Scan_1080i Scan_1080i2 Scan_1080p Vmode_multi Vmode_ntsc Vmode_pal logo case \
+	background2 elm	# OPL_DB tweak
+
+GFX_OBJS = $(PNG_ASSETS:%=%_png.o) poeveticanew.o icon_sys.o icon_icn.o
+
+AUDIO_OBJS =	boot.o cancel.o confirm.o cursor.o message.o transition.o
+
+MISC_OBJS =	icon_sys_A.o icon_sys_J.o icon_sys_C.o conf_theme_OPL.o
+
+TRANSLATIONS = Albanian Arabic Bulgarian Cebuano Croatian Czech Danish Dutch Filipino French \
+	German Greek Hungarian Indonesian Italian Japanese Korean Laotian Persian Polish Portuguese \
+	Portuguese_BR Romana Russian Ryukyuan SChinese Spanish Swedish TChinese Turkish Vietnamese
 
 EE_BIN = opl.elf
 EE_BIN_STRIPPED = opl_stripped.elf
@@ -109,11 +111,15 @@ EE_VPKD = OPNPS2LD-$(OPL_VERSION)
 EE_SRC_DIR = src/
 EE_OBJS_DIR = obj/
 EE_ASM_DIR = asm/
+LNG_SRC_DIR = lng_src/
+LNG_TMPL_DIR = lng_tmpl/
+LNG_DIR = lng/
+PNG_ASSETS_DIR = gfx/
 
 MAPFILE = opl.map
 EE_LDFLAGS += -Wl,-Map,$(MAPFILE)
 
-EE_LIBS = -L$(PS2SDK)/ports/lib -L$(GSKIT)/lib -L./lib -lgskit -ldmakit -lgskit_toolkit -lpoweroff -lfileXio -lpatches -ljpeg_ps2_addons -ljpeg -lpng -lz -ldebug -lm -lmc -lfreetype -lvux -lcdvd -lnetman -lps2ips -laudsrv -lpadx -lelf-loader
+EE_LIBS = -L$(PS2SDK)/ports/lib -L$(GSKIT)/lib -L./lib -lgskit -ldmakit -lgskit_toolkit -lpoweroff -lfileXio -lpatches -ljpeg_ps2_addons -ljpeg -lpng -lz -ldebug -lm -lmc -lfreetype -lvux -lcdvd -lnetman -lps2ips -laudsrv -lvorbisfile -lvorbis -logg -lpadx -lelf-loader-nocolour
 EE_INCS += -I$(PS2SDK)/ports/include -I$(PS2SDK)/ports/include/freetype2 -I$(GSKIT)/include -I$(GSKIT)/ee/dma/include -I$(GSKIT)/ee/gs/include -I$(GSKIT)/ee/toolkit/include -Imodules/iopcore/common -Imodules/network/common -Imodules/hdd/common -Iinclude
 
 BIN2C = $(PS2SDK)/bin/bin2c
@@ -130,11 +136,9 @@ endif
 ifeq ($(DTL_T10000),1)
   EE_CFLAGS += -D_DTL_T10000
   EECORE_EXTRA_FLAGS += DTL_T10000=1
-  UDNL_SRC = modules/iopcore/udnl-t300
-  UDNL_OUT = modules/iopcore/udnl-t300/udnl.irx
+  UDNL_OUT = $(PS2SDK)/iop/irx/udnl-t300.irx
 else
-  UDNL_SRC = modules/iopcore/udnl
-  UDNL_OUT = modules/iopcore/udnl/udnl.irx
+  UDNL_OUT = $(PS2SDK)/iop/irx/udnl.irx
 endif
 
 ifeq ($(IGS),1)
@@ -171,7 +175,7 @@ ifeq ($(DEBUG),1)
     IOP_OBJS += udptty-ingame.o
   else ifeq ($(EESIO_DEBUG),1)
     EE_CFLAGS += -D__EESIO_DEBUG
-    EECORE_EXTRA_FLAGS += EESIO_DEBUG=1
+    EE_LIBS += -lsiocookie
   else ifeq ($(INGAME_DEBUG),1)
     EE_CFLAGS += -D__INGAME_DEBUG
     EECORE_EXTRA_FLAGS = LOAD_DEBUG_MODULES=1
@@ -196,16 +200,19 @@ EE_CFLAGS += -fsingle-precision-constant -DOPL_VERSION=\"$(OPL_VERSION)\"
 
 # There are a few places where the config key/value are truncated, so disable these warnings
 EE_CFLAGS += -Wno-format-truncation -Wno-stringop-truncation
+# Generate .d files to track header file dependencies of each object file
+EE_CFLAGS += -MMD -MP
 EE_OBJS += $(FRONTEND_OBJS) $(GFX_OBJS) $(AUDIO_OBJS) $(MISC_OBJS) $(EECORE_OBJS) $(IOP_OBJS)
 EE_OBJS := $(EE_OBJS:%=$(EE_OBJS_DIR)%)
+EE_DEPS = $($(filter %.o,$(EE_OBJS)):%.o=%.d)
 
 .SILENT:
 
-.PHONY: all release debug iopcore_debug eesio_debug ingame_debug deci2_debug clean rebuild pc_tools pc_tools_win32 oplversion format format-check ps2sdk-not-setup
+.PHONY: all release debug iopcore_debug eesio_debug ingame_debug deci2_debug clean rebuild pc_tools pc_tools_win32 oplversion format format-check ps2sdk-not-setup download_lng download_lwNBD languages
 
 ifdef PS2SDK
 
-all:
+all: download_lng download_lwNBD languages
 	echo "Building Open PS2 Loader $(OPL_VERSION)..."
 	echo "-Interface"
 ifneq ($(NOT_PACKED),1)
@@ -214,7 +221,7 @@ else
 	$(MAKE) $(EE_BIN)
 endif
 
-release: $(EE_VPKD).ZIP
+release: download_lng download_lwNBD languages $(EE_VPKD).ZIP
 
 debug:
 	$(MAKE) DEBUG=1 all
@@ -231,7 +238,7 @@ ingame_debug:
 deci2_debug:
 	$(MAKE) DEBUG=1 INGAME_DEBUG=1 DECI2_DEBUG=1 all
 
-clean:
+clean:	download_lwNBD
 	echo "Cleaning..."
 	echo "-Interface"
 	rm -fr $(MAPFILE) $(EE_BIN) $(EE_BIN_PACKED) $(EE_BIN_STRIPPED) $(EE_VPKD).* $(EE_OBJS_DIR) $(EE_ASM_DIR)
@@ -240,14 +247,8 @@ clean:
 	echo "-Elf Loader"
 	$(MAKE) -C elfldr clean
 	echo "-IOP core"
-	echo " -udnl-t300"
-	$(MAKE) -C modules/iopcore/udnl-t300 clean
-	echo " -udnl"
-	$(MAKE) -C modules/iopcore/udnl clean
 	echo " -imgdrv"
 	$(MAKE) -C modules/iopcore/imgdrv clean
-	echo " -eesync"
-	$(MAKE) -C modules/iopcore/eesync clean
 	echo " -cdvdman"
 	$(MAKE) -C modules/iopcore/cdvdman USE_BDM=1 clean
 	$(MAKE) -C modules/iopcore/cdvdman USE_SMB=1 clean
@@ -291,11 +292,9 @@ clean:
 	echo " -genvmc"
 	$(MAKE) -C modules/vmc/genvmc clean
 	echo " -lwnbdsvr"
-	$(MAKE) -C modules/network/lwnbdsvr clean
+	$(MAKE) -C modules/network/lwNBD/ TARGET=iop clean
 	echo " -udptty-ingame"
 	$(MAKE) -C modules/debug/udptty-ingame clean
-	echo " -ioptrap"
-	$(MAKE) -C modules/debug/ioptrap clean
 	echo " -ps2link"
 	$(MAKE) -C modules/debug/ps2link clean
 	echo " -ds34usb"
@@ -307,6 +306,10 @@ clean:
 	$(MAKE) -C modules/pademu USE_USB=1 clean
 	echo "-pc tools"
 	$(MAKE) -C pc clean
+
+realclean: clean
+	echo "-Language"
+	rm -fr $(LNG_SRC_DIR) $(LNG_DIR)lang_*.lng $(INTERNAL_LANGUAGE_C) $(INTERNAL_LANGUAGE_H)
 
 rebuild: clean all
 
@@ -324,11 +327,12 @@ pc_tools_win32:
 	echo "Building WIN32 iso2opl, opl2iso and genvmc..."
 	$(MAKE) _WIN32=1 -C pc
 
-format:
-	find . -type f -a \( -iname \*.h -o -iname \*.c \) | xargs clang-format -i
+cfla = "thirdparty/clang-format-lint-action"
+format-check: download_cfla
+	@python3 $(cfla)/run-clang-format.py --clang-format-executable $(cfla)/clang-format/clang-format12 -r .
 
-format-check:
-	@! find . -type f -a \( -iname \*.h -o -iname \*.c \) | xargs clang-format -style=file -output-replacements-xml | grep "<replacement " >/dev/null
+format: download_cfla
+	@python3 $(cfla)/run-clang-format.py --clang-format-executable $(cfla)/clang-format/clang-format12 -r . -i true
 
 $(EE_ASM_DIR):
 	@mkdir -p $@
@@ -369,10 +373,6 @@ elfldr/elfldr.elf: elfldr
 $(EE_ASM_DIR)elfldr.s: elfldr/elfldr.elf | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ elfldr_elf
 
-$(UDNL_OUT): $(UDNL_SRC)
-	echo "-IOP core"
-	$(MAKE) -C $<
-
 $(EE_ASM_DIR)udnl.s: $(UDNL_OUT) | $(EE_ASM_DIR)
 	$(BIN2S) $(UDNL_OUT) $@ udnl_irx
 
@@ -382,10 +382,7 @@ modules/iopcore/imgdrv/imgdrv.irx: modules/iopcore/imgdrv
 $(EE_ASM_DIR)imgdrv.s: modules/iopcore/imgdrv/imgdrv.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ imgdrv_irx
 
-modules/iopcore/eesync/eesync.irx: modules/iopcore/eesync
-	$(MAKE) -C $<
-
-$(EE_ASM_DIR)eesync.s: modules/iopcore/eesync/eesync.irx | $(EE_ASM_DIR)
+$(EE_ASM_DIR)eesync.s: $(PS2SDK)/iop/irx/eesync-nano.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ eesync_irx
 
 modules/iopcore/cdvdman/bdm_cdvdman.irx: modules/iopcore/cdvdman
@@ -472,7 +469,7 @@ modules/isofs/isofs.irx: modules/isofs
 $(EE_ASM_DIR)isofs.s: modules/isofs/isofs.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ isofs_irx
 
-$(EE_ASM_DIR)usbd.s: $(PS2SDK)/iop/irx/usbd.irx | $(EE_ASM_DIR)
+$(EE_ASM_DIR)usbd.s: $(PS2SDK)/iop/irx/usbd_mini.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ usbd_irx
 
 $(EE_ASM_DIR)libsd.s: $(PS2SDK)/iop/irx/libsd.irx | $(EE_ASM_DIR)
@@ -520,8 +517,8 @@ $(EE_ASM_DIR)usb_pademu.s: modules/pademu/usb_pademu.irx
 $(EE_ASM_DIR)bdm.s: $(PS2SDK)/iop/irx/bdm.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ bdm_irx
 
-$(EE_ASM_DIR)bdmfs_vfat.s: $(PS2SDK)/iop/irx/bdmfs_vfat.irx | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ bdmfs_vfat_irx
+$(EE_ASM_DIR)bdmfs_fatfs.s: $(PS2SDK)/iop/irx/bdmfs_fatfs.irx | $(EE_ASM_DIR)
+	$(BIN2S) $< $@ bdmfs_fatfs_irx
 
 $(EE_ASM_DIR)iLinkman.s: $(PS2SDK)/iop/irx/iLinkman.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ iLinkman_irx
@@ -623,10 +620,10 @@ modules/vmc/genvmc/genvmc.irx: modules/vmc/genvmc
 $(EE_ASM_DIR)genvmc.s: modules/vmc/genvmc/genvmc.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ genvmc_irx
 
-modules/network/lwnbdsvr/lwnbdsvr.irx: modules/network/lwnbdsvr
-	$(MAKE) -C $<
+modules/network/lwNBD/lwnbdsvr.irx: modules/network/lwNBD
+	$(MAKE) TARGET=iop -C $<
 
-$(EE_ASM_DIR)lwnbdsvr.s: modules/network/lwnbdsvr/lwnbdsvr.irx | $(EE_ASM_DIR)
+$(EE_ASM_DIR)lwnbdsvr.s: modules/network/lwNBD/lwnbdsvr.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ lwnbdsvr_irx
 
 $(EE_ASM_DIR)udptty.s: $(PS2SDK)/iop/irx/udptty.irx | $(EE_ASM_DIR)
@@ -638,10 +635,7 @@ modules/debug/udptty-ingame/udptty.irx: modules/debug/udptty-ingame
 $(EE_ASM_DIR)udptty-ingame.s: modules/debug/udptty-ingame/udptty.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ udptty_ingame_irx
 
-modules/debug/ioptrap/ioptrap.irx: modules/debug/ioptrap
-	$(MAKE) -C $<
-
-$(EE_ASM_DIR)ioptrap.s: modules/debug/ioptrap/ioptrap.irx | $(EE_ASM_DIR)
+$(EE_ASM_DIR)ioptrap.s: $(PS2SDK)/iop/irx/ioptrap.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ ioptrap_irx
 
 modules/debug/ps2link/ps2link.irx: modules/debug/ps2link
@@ -679,235 +673,6 @@ $(EE_ASM_DIR)mcman.s: $(PS2SDK)/iop/irx/mcman.irx | $(EE_ASM_DIR)
 
 $(EE_ASM_DIR)mcserv.s: $(PS2SDK)/iop/irx/mcserv.irx | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ mcserv_irx
-
-$(EE_ASM_DIR)load0.s: gfx/load0.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load0_png
-
-$(EE_ASM_DIR)load1.s: gfx/load1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load1_png
-
-$(EE_ASM_DIR)load2.s: gfx/load2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load2_png
-
-$(EE_ASM_DIR)load3.s: gfx/load3.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load3_png
-
-$(EE_ASM_DIR)load4.s: gfx/load4.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load4_png
-
-$(EE_ASM_DIR)load5.s: gfx/load5.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load5_png
-
-$(EE_ASM_DIR)load6.s: gfx/load6.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load6_png
-
-$(EE_ASM_DIR)load7.s: gfx/load7.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ load7_png
-
-$(EE_ASM_DIR)usb_icon.s: gfx/usb.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ usb_png
-
-$(EE_ASM_DIR)usb_bd_icon.s: gfx/usb_bd.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ usb_bd_png
-
-$(EE_ASM_DIR)ilk_bd_icon.s: gfx/ilk_bd.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ ilk_bd_png
-
-$(EE_ASM_DIR)m4s_bd_icon.s: gfx/m4s_bd.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ m4s_bd_png
-
-$(EE_ASM_DIR)hdd_icon.s: gfx/hdd.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ hdd_png
-
-$(EE_ASM_DIR)eth_icon.s: gfx/eth.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ eth_png
-
-$(EE_ASM_DIR)app_icon.s: gfx/app.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ app_png
-
-#START of OPL_DB tweaks
-$(EE_ASM_DIR)elm_icon.s: gfx/elm.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ elm_png
-#END of OPL_DB tweaks
-
-$(EE_ASM_DIR)cross_icon.s: gfx/cross.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ cross_png
-
-$(EE_ASM_DIR)triangle_icon.s: gfx/triangle.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ triangle_png
-
-$(EE_ASM_DIR)circle_icon.s: gfx/circle.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ circle_png
-
-$(EE_ASM_DIR)square_icon.s: gfx/square.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ square_png
-
-$(EE_ASM_DIR)select_icon.s: gfx/select.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ select_png
-
-$(EE_ASM_DIR)start_icon.s: gfx/start.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ start_png
-
-$(EE_ASM_DIR)left_icon.s: gfx/left.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ left_png
-
-$(EE_ASM_DIR)right_icon.s: gfx/right.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ right_png
-
-$(EE_ASM_DIR)up_icon.s: gfx/up.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ up_png
-
-$(EE_ASM_DIR)down_icon.s: gfx/down.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ down_png
-
-$(EE_ASM_DIR)background.s: gfx/background.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ background_png
-
-#START of OPL_DB tweaks
-$(EE_ASM_DIR)background2.s: gfx/background2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ background2_png
-#END of OPL_DB tweaks
-
-$(EE_ASM_DIR)info.s: gfx/info.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ info_png
-
-$(EE_ASM_DIR)cover.s: gfx/cover.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ cover_png
-
-$(EE_ASM_DIR)disc.s: gfx/disc.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ disc_png
-
-$(EE_ASM_DIR)screen.s: gfx/screen.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ screen_png
-
-$(EE_ASM_DIR)ELF.s: gfx/ELF.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ ELF_png
-
-$(EE_ASM_DIR)HDL.s: gfx/HDL.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ HDL_png
-
-$(EE_ASM_DIR)ISO.s: gfx/ISO.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ ISO_png
-
-$(EE_ASM_DIR)UL.s: gfx/UL.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ UL_png
-
-$(EE_ASM_DIR)CD.s: gfx/CD.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ CD_png
-
-$(EE_ASM_DIR)DVD.s: gfx/DVD.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ DVD_png
-
-$(EE_ASM_DIR)Aspect_s.s: gfx/Aspect_s.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Aspect_s_png
-
-$(EE_ASM_DIR)Aspect_w.s: gfx/Aspect_w.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Aspect_w_png
-
-$(EE_ASM_DIR)Aspect_w1.s: gfx/Aspect_w1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Aspect_w1_png
-
-$(EE_ASM_DIR)Aspect_w2.s: gfx/Aspect_w2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Aspect_w2_png
-
-$(EE_ASM_DIR)Device_1.s: gfx/Device_1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_1_png
-
-$(EE_ASM_DIR)Device_2.s: gfx/Device_2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_2_png
-
-$(EE_ASM_DIR)Device_3.s: gfx/Device_3.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_3_png
-
-$(EE_ASM_DIR)Device_4.s: gfx/Device_4.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_4_png
-
-$(EE_ASM_DIR)Device_5.s: gfx/Device_5.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_5_png
-
-$(EE_ASM_DIR)Device_6.s: gfx/Device_6.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_6_png
-
-$(EE_ASM_DIR)Device_all.s: gfx/Device_all.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Device_all_png
-
-$(EE_ASM_DIR)Rating_0.s: gfx/Rating_0.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_0_png
-
-$(EE_ASM_DIR)Rating_1.s: gfx/Rating_1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_1_png
-
-$(EE_ASM_DIR)Rating_2.s: gfx/Rating_2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_2_png
-
-$(EE_ASM_DIR)Rating_3.s: gfx/Rating_3.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_3_png
-
-$(EE_ASM_DIR)Rating_4.s: gfx/Rating_4.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_4_png
-
-$(EE_ASM_DIR)Rating_5.s: gfx/Rating_5.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Rating_5_png
-
-$(EE_ASM_DIR)Scan_240p.s: gfx/Scan_240p.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_240p_png
-
-$(EE_ASM_DIR)Scan_240p1.s: gfx/Scan_240p1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_240p1_png
-
-$(EE_ASM_DIR)Scan_480i.s: gfx/Scan_480i.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480i_png
-
-$(EE_ASM_DIR)Scan_480p.s: gfx/Scan_480p.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p_png
-
-$(EE_ASM_DIR)Scan_480p1.s: gfx/Scan_480p1.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p1_png
-
-$(EE_ASM_DIR)Scan_480p2.s: gfx/Scan_480p2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p2_png
-
-$(EE_ASM_DIR)Scan_480p3.s: gfx/Scan_480p3.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p3_png
-
-$(EE_ASM_DIR)Scan_480p4.s: gfx/Scan_480p4.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p4_png
-
-$(EE_ASM_DIR)Scan_480p5.s: gfx/Scan_480p5.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_480p5_png
-
-$(EE_ASM_DIR)Scan_576i.s: gfx/Scan_576i.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_576i_png
-
-$(EE_ASM_DIR)Scan_576p.s: gfx/Scan_576p.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_576p_png
-
-$(EE_ASM_DIR)Scan_720p.s: gfx/Scan_720p.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_720p_png
-
-$(EE_ASM_DIR)Scan_1080i.s: gfx/Scan_1080i.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_1080i_png
-
-$(EE_ASM_DIR)Scan_1080i2.s: gfx/Scan_1080i2.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_1080i2_png
-
-$(EE_ASM_DIR)Scan_1080p.s: gfx/Scan_1080p.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Scan_1080p_png
-
-$(EE_ASM_DIR)Vmode_multi.s: gfx/Vmode_multi.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Vmode_multi_png
-
-$(EE_ASM_DIR)Vmode_ntsc.s: gfx/Vmode_ntsc.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Vmode_ntsc_png
-
-$(EE_ASM_DIR)Vmode_pal.s: gfx/Vmode_pal.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ Vmode_pal_png
-
-$(EE_ASM_DIR)logo.s: gfx/logo.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ logo_png
-
-$(EE_ASM_DIR)case.s: gfx/case.png | $(EE_ASM_DIR)
-	$(BIN2S) $< $@ case_png
 
 $(EE_ASM_DIR)poeveticanew.s: thirdparty/PoeVeticaNew.ttf | $(EE_ASM_DIR)
 	$(BIN2S) $< $@ poeveticanew_raw
@@ -972,7 +737,48 @@ $(EE_OBJS_DIR)%.o: $(EE_SRC_DIR)%.c | $(EE_OBJS_DIR)
 $(EE_OBJS_DIR)%.o: $(EE_ASM_DIR)%.s | $(EE_OBJS_DIR)
 	$(EE_AS) $(EE_ASFLAGS) $< -o $@
 
+$(PNG_ASSETS:%=$(EE_ASM_DIR)%_png.s): $(EE_ASM_DIR)%_png.s: $(PNG_ASSETS_DIR)%.png | $(EE_ASM_DIR)
+	$(BIN2S) $< $@ $(@:$(EE_ASM_DIR)%.s=%)
+
 endif
+
+TRANSLATIONS_LNG = $(TRANSLATIONS:%=$(LNG_DIR)lang_%.lng)
+TRANSLATIONS_YML = $(TRANSLATIONS:%=$(LNG_SRC_DIR)%.yml)
+ENGLISH_TEMPLATE_YML = $(LNG_SRC_DIR)English.yml
+ENGLISH_LNG = $(LNG_SRC_DIR)lang_English.lng
+BASE_LANGUAGE = $(LNG_TMPL_DIR)_base.yml
+INTERNAL_LANGUAGE_C = src/lang_internal.c
+INTERNAL_LANGUAGE_H = include/lang_autogen.h
+LANG_COMPILER = lang_compiler.py
+
+languages: $(ENGLISH_TEMPLATE_YML) $(TRANSLATIONS_YML) $(ENGLISH_LNG) $(TRANSLATIONS_LNG) $(INTERNAL_LANGUAGE_C) $(INTERNAL_LANGUAGE_H)
+
+download_lng:
+	./download_lng.sh
+
+download_lwNBD:
+	./download_lwNBD.sh
+
+download_cfla:
+	./download_cfla.sh
+
+$(TRANSLATIONS_LNG): $(LNG_DIR)lang_%.lng: $(LNG_SRC_DIR)%.yml $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --make_lng --base $(BASE_LANGUAGE) --translation $< $@
+
+$(TRANSLATIONS_YML): %.yml: $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --update_translation_yml --base $(BASE_LANGUAGE) --translation $@
+
+$(ENGLISH_TEMPLATE_YML): $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --make_template_yml --base $< $@
+
+$(ENGLISH_LNG): $(ENGLISH_TEMPLATE_YML) $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --make_lng --base $(BASE_LANGUAGE) --translation $< $@
+
+$(INTERNAL_LANGUAGE_C): $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --make_source --base $< $@
+
+$(INTERNAL_LANGUAGE_H): $(BASE_LANGUAGE) $(LANG_COMPILER)
+	python3 $(LANG_COMPILER) --make_header --base $< $@
 
 ifndef PS2SDK
 ps2sdk-not-setup:
@@ -986,3 +792,5 @@ ifdef PS2SDK
 include $(PS2SDK)/samples/Makefile.pref
 include $(PS2SDK)/samples/Makefile.eeglobal
 endif
+
+-include $(EE_DEPS)
