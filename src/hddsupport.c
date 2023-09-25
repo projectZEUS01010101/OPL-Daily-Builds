@@ -240,7 +240,6 @@ void hddLoadModules(void)
             return;
         }
 
-
         LOG("[PS2FS]:\n");
         //START of OPL_DB tweaks
         ret = sysLoadModuleBuffer(&ps2fs_irx, size_ps2fs_irx, sizeof(pfsarg), pfsarg);

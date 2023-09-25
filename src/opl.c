@@ -1074,12 +1074,12 @@ static void _saveConfig()
         configSetInt(configOPL, CONFIG_OPL_HDD_MODE, gHDDStartMode);
         configSetInt(configOPL, CONFIG_OPL_ETH_MODE, gETHStartMode);
         configSetInt(configOPL, CONFIG_OPL_APP_MODE, gAPPStartMode);
-        configSetInt(configOPL, CONFIG_OPL_BDM_CACHE, bdmCacheSize);
-        configSetInt(configOPL, CONFIG_OPL_HDD_CACHE, hddCacheSize);
-        configSetInt(configOPL, CONFIG_OPL_SMB_CACHE, smbCacheSize);
         //START of OPL_DB tweaks
         configSetInt(configOPL, CONFIG_OPL_ELM_MODE, gELMStartMode);
         //END of OPL_DB tweaks
+        configSetInt(configOPL, CONFIG_OPL_BDM_CACHE, bdmCacheSize);
+        configSetInt(configOPL, CONFIG_OPL_HDD_CACHE, hddCacheSize);
+        configSetInt(configOPL, CONFIG_OPL_SMB_CACHE, smbCacheSize);
         configSetInt(configOPL, CONFIG_OPL_ENABLE_ILINK, gEnableILK);
         configSetInt(configOPL, CONFIG_OPL_ENABLE_MX4SIO, gEnableMX4SIO);
         configSetInt(configOPL, CONFIG_OPL_SFX, gEnableSFX);

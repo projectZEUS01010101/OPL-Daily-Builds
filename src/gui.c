@@ -527,12 +527,12 @@ void guiShowConfig()
         diaGetInt(diaConfig, CFG_HDDMODE, &gHDDStartMode);
         diaGetInt(diaConfig, CFG_ETHMODE, &gETHStartMode);
         diaGetInt(diaConfig, CFG_APPMODE, &gAPPStartMode);
-        diaGetInt(diaConfig, CFG_BDMCACHE, &bdmCacheSize);
-        diaGetInt(diaConfig, CFG_HDDCACHE, &hddCacheSize);
-        diaGetInt(diaConfig, CFG_SMBCACHE, &smbCacheSize);
         //START of OPL_DB tweaks
         diaGetInt(diaConfig, CFG_ELMMODE, &gELMStartMode);
         //END of OPL_DB tweaks
+        diaGetInt(diaConfig, CFG_BDMCACHE, &bdmCacheSize);
+        diaGetInt(diaConfig, CFG_HDDCACHE, &hddCacheSize);
+        diaGetInt(diaConfig, CFG_SMBCACHE, &smbCacheSize);
 
         if (ret == BLOCKDEVICE_BUTTON)
             guiShowBlockDeviceConfig();
