@@ -276,9 +276,6 @@ Open PS2 Loader needs the [**latest PS2SDK**](https://github.com/ps2dev/ps2sdk)
 </details>
 
 
-</p>
-</details>
-
 <details>
   <summary> <b> Frequent Issues </b> </summary>
 <p>
@@ -292,3 +289,6 @@ Open PS2 Loader needs the [**latest PS2SDK**](https://github.com/ps2dev/ps2sdk)
 ### Game freezes on white screen
 
 > Main game executable could not be found. Either game is fragmented or image is corrupted
+
+</p>
+</details>
