@@ -2,17 +2,6 @@
 #define __LANG_H
 
 #include "lang_autogen.h"
-    // START of OPL_DB tweaks
-    _STR_ELM,
-    _STR_ELMMODE,
-    _STR_ELM_LAUNCH_POPSTARTER_NOTFOUND,
-    _STR_ELM_LAUNCH_VCD_NOTFOUND,
-    _STR_ELM_RENAME_ERROR,
-    _STR_ELM_DELETE_ERROR,
-    _STR_OPL_FREE,
-    _STR_OPL_IFCARO,
-    _STR_OPL_DB,
-    // END of OPL_DB tweaks
 
 // Maximum external languages supported
 #define MAX_LANGUAGE_FILES 15
