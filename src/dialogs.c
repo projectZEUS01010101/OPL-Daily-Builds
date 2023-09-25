@@ -128,19 +128,16 @@ struct UIItem diaNetConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_PASSWORD}}},
     {UI_SPACER},
     {UI_PASSWORD, NETCFG_SHARE_PASSWORD, 1, 1, _STR_HINT_GUEST, 0, 0, {.stringvalue = {"", "", NULL}}},
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
 
     // buttons
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
     {UI_BUTTON, NETCFG_OK, 1, 1, -1, 0, 0, {.label = {NULL, -1}}},
     {UI_SPACER},
     {UI_BUTTON, NETCFG_RECONNECT, 1, 1, -1, 0, 0, {.label = {NULL, _STR_RECONNECT}}},
-    {UI_BREAK},
+    //START of OPL_DB tweaks
+    // {UI_BREAK},
+    //END of OPL_DB tweaks
 
     // end of dialog
     {UI_TERMINATOR}};
@@ -276,8 +273,8 @@ struct UIItem diaConfig[] = {
     {UI_INT, CFG_SMBCACHE, 1, 1, -1, 0, 0, {.intvalue = {16, 4, 0, 32, NULL}}},
     //START of OPL_DB tweaks
     // {UI_BREAK},
-    {UI_SPLITTER},
     //END of OPL_DB tweaks
+
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},
@@ -364,10 +361,7 @@ struct UIItem diaUIConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_WIDE_SCREEN}}},
     {UI_SPACER},
     {UI_BOOL, UICFG_WIDESCREEN, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
 
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
@@ -893,7 +887,6 @@ struct UIItem diaPadMacroConfig[] = {
 // About Menu
 struct UIItem diaAbout[] = {
     {UI_LABEL, ABOUT_TITLE, 1, 1, -1, 0, 0, {.label = {NULL, -1}}},
-    //START of OPL_DB tweaks
     {UI_SPLITTER},
 
     // Coders
@@ -914,14 +907,12 @@ struct UIItem diaAbout[] = {
 
     //START of OPL_DB tweaks
     {UI_SPACER},
-    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"danielb - Jay-Jay - ps2netbox/ps2usb", -1}}},
+    {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"danielb - Jay-Jay - ps2netbox/ps2usb - citronalco", -1}}},
     {UI_BREAK},
-    //END of OPL_DB tweaks  
 
+    //END of OPL_DB tweaks
     {UI_SPACER},
     {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"... and the anonymous ...", -1}}},
-    {UI_BREAK},
-
     {UI_BREAK},
 
     // Quality Assurance
@@ -936,7 +927,9 @@ struct UIItem diaAbout[] = {
     {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {"LocalH - RandQalan - ShaolinAssassin - yoshi314 - zero35", -1}}},
     {UI_BREAK},
 
-    {UI_BREAK},
+    //START of OPL_DB tweaks
+    // {UI_BREAK},
+    //END of OPL_DB tweaks
 
     // Network update
     {UI_LABEL, 0, 1, 1, -1, 0, 15, {.label = {NULL, _STR_NET_UPDATE}}},
@@ -947,7 +940,9 @@ struct UIItem diaAbout[] = {
     {UI_BREAK},
 
     // Build Options
-    {UI_BREAK},
+    //START of OPL_DB tweaks
+    //{UI_BREAK},
+    //END of OPL_DB tweaks
     {UI_LABEL, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_BUILD_DETAILS}}},
     {UI_SPACER},
     {UI_LABEL, ABOUT_BUILD_DETAILS, 1, 1, -1, 0, 0, {.label = {NULL, -1}}},
@@ -964,7 +959,6 @@ struct UIItem diaAbout[] = {
 
     {UI_SPACER},
     {UI_LABEL, 0, 1, 1, -1, 0, 10, {.label = {NULL, _STR_OPL_DB}}},
-    {UI_SPLITTER},
     //END of OPL_DB tweaks
 
     // buttons
@@ -988,9 +982,7 @@ struct UIItem diaNetCompatUpdate[] = {
     {UI_SPACER},
     {UI_INT, NETUPD_PROGRESS, 0, 1, -1, 0, 0, {.intvalue = {0, 0, 0, 100}}},
     {UI_LABEL, NETUPD_PROGRESS_PERC_LBL, 1, 1, -1, 0, 0, {.label = {"%", -1}}},
-    //START of OPL_DB tweaks
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
 
     // buttons
     {UI_BUTTON, NETUPD_BTN_START, 1, 1, -1, 0, 0, {.label = {NULL, _STR_START}}},
@@ -1009,10 +1001,7 @@ struct UIItem diaParentalLockConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_PARENLOCK_PASSWORD}}},
     {UI_SPACER},
     {UI_PASSWORD, CFG_PARENLOCK_PASSWORD, 1, 1, _STR_PARENLOCK_PASSWORD_HINT, 0, 0, {.stringvalue = {"", "", NULL}}},
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
 
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
@@ -1059,10 +1048,7 @@ struct UIItem diaAudioConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_DEF_BGM_PATH}}},
     {UI_SPACER},
     {UI_STRING, CFG_DEFAULT_BGM_PATH, 1, 1, _STR_DEF_BGM_PATH_HINT, 0, 0, {.stringvalue = {"", "", NULL}}},
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    {UI_SPLITTER},
-    //END of OPL_DB tweaks
+    {UI_BREAK},
 
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
@@ -1083,20 +1069,21 @@ struct UIItem diaControllerConfig[] = {
     {UI_LABEL, 0, 1, 1, -1, -40, 0, {.label = {NULL, _STR_SELECTBUTTON}}},
     {UI_SPACER},
     {UI_ENUM, CFG_SELECTBUTTON, 1, 1, -1, 0, 0, {.intvalue = {0, 0}}},
-    //START of OPL_DB tweaks
-    // {UI_BREAK},
-    {UI_SPLITTER},
+//START of OPL_DB tweaks
+// {UI_BREAK},
 //END of OPL_DB tweaks
 #ifdef PADEMU
-    {UI_BREAK},
-    {UI_BUTTON, PADEMU_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADEMUCONFIG}}},
-    {UI_BREAK},
-    {UI_BUTTON, PADMACRO_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACROCONFIG}}},
     //START of OPL_DB tweaks
     // {UI_BREAK},
     {UI_SPLITTER},
     //END of OPL_DB tweaks
+    {UI_BUTTON, PADEMU_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADEMUCONFIG}}},
+    {UI_BREAK},
+    {UI_BUTTON, PADMACRO_GLOBAL_BUTTON, 1, 1, -1, 0, 0, {.label = {NULL, _STR_PADMACROCONFIG}}},
 #endif
+    //START of OPL_DB tweaks
+    {UI_BREAK},
+    //END of OPL_DB tweaks
     // buttons
     {UI_OK, 0, 1, 1, -1, 0, 0, {.label = {NULL, _STR_OK}}},
     {UI_BREAK},
