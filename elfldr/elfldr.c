@@ -14,6 +14,7 @@
 #include <string.h>
 #include <stdio.h>
 
+
 // START of OPL_DB tweaks
 // ELF-loading stuff
 #define ELF_MAGIC   0x464c457f
